@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 // import quiz from '../../../Backend/services/quiz';
 import axios from 'axios';
+import mongoose from 'mongoose';
 
 const QuizTaker = ({ onQuizComplete }) => {
   // Mock quiz data for demonstration
@@ -61,9 +62,15 @@ const QuizTaker = ({ onQuizComplete }) => {
         console.log('quiz id : ',quizData.quizId);
         console.log('user answers : ',userAnswers);
         console.log('correct answers : ',quizData.answers);
-        
+        const userId = '6815c532759a26ff95250ef9';
+
       // Mock the API call for demonstration
-      const response=await axios.post('http://localhost:3000/ai/submit-quiz', {quizId: quizData.quizId, userAnswers,correctAnswers:quizData.answers,userId:123 });
+      const response=await axios.post('http://localhost:3000/ai/submit-quiz',
+         {quizId: quizData.quizId,
+          topic:quizData.topic,
+          userAnswers: userAnswers,
+          correctAnswers:quizData.answers,
+          userId:userId});
       if(response.status === 200){
         console.log('Score : ',response.data.score);
         setSubmitting(false);

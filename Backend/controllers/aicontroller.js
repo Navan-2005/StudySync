@@ -1,5 +1,5 @@
 const quiz = require('../services/quiz');
-// const User = require('../models/User'); // Assuming you have a User model
+const User = require('../models/User'); // Assuming you have a User model
 
 const generateQuiz = async (req, res) => {
     const { topic } = req.body;
@@ -76,25 +76,26 @@ const generateQuiz = async (req, res) => {
         
 //         // Save to leaderboard (if userId provided)
 //         let leaderboardEntry = null;
-//         if (userId) {
-//             try {
-//                 // Save to database (assuming you have a User model with quizResults array)
-//                 leaderboardEntry = await User.findByIdAndUpdate(
-//                     userId,
-//                     {
-//                         $push: {
-//                             quizResults: {
-//                                 quizId,
-//                                 topic: quizData.topic,
-//                                 score,
-//                                 percentage,
-//                                 completedAt: new Date()
-//                             }
-//                         }
-//                     },
-//                     { new: true }
-//                 );
-//             } catch (dbError) {
+        // if (userId) {
+        //     try {
+        //         // Save to database (assuming you have a User model with quizResults array)
+        //         leaderboardEntry = await User.findByIdAndUpdate(
+        //             userId,
+        //             {
+        //                 $push: {
+        //                     quizResults: {
+        //                         quizId,
+        //                         topic: quizData.topic,
+        //                         score,
+        //                         percentage,
+        //                         completedAt: new Date()
+        //                     }
+        //                 }
+        //             },
+        //             { new: true }
+        //         );
+        //     } 
+//                catch (dbError) {
 //                 console.error('Database error:', dbError);
 //                 // Continue with response even if DB update fails
 //             }
@@ -115,31 +116,76 @@ const generateQuiz = async (req, res) => {
 //     }
 // };
 
+const mongoose = require('mongoose');
+
 const submitQuiz = async (req, res) => {
-    const { quizId, userAnswers, correctAnswers, userId } = req.body;
-  
-    if (!quizId || !userAnswers || !correctAnswers ) {
-      return res.status(400).json({ error: 'Missing data in request' });
+  const { quizId, topic, userAnswers, correctAnswers, userId } = req.body;
+
+  // Validate required fields
+  if (!quizId || !userAnswers || !correctAnswers) {
+    return res.status(400).json({ error: 'Missing data in request' });
+  }
+
+  // Validate ObjectId for userId
+  // let userObjectId;
+  // try {
+  //   userObjectId = mongoose.Types.ObjectId(userId); // Convert to ObjectId
+  // } catch (error) {
+  //   return res.status(400).json({ error: 'Invalid userId format' });
+  // }
+
+  let score = 0;
+  for (let i = 0; i < correctAnswers.length; i++) {
+    if (userAnswers[i] === correctAnswers[i]) {
+      score++;
     }
-  
-    let score = 0;
-    for (let i = 0; i < correctAnswers.length; i++) {
-      if (userAnswers[i] === correctAnswers[i]) {
-        score++;
+  }
+
+  console.log('Score:', score);
+
+  const percentage = (score / userAnswers.length) * 100;
+  console.log('Percentage:', percentage);
+
+  if (userId) {
+    try {
+      // Update the user's quiz results in the database
+      const leaderboardEntry = await User.findByIdAndUpdate(
+        userId,
+        {
+          $push: {
+            quizResults: {
+              quizId,
+              topic,
+              score,
+              percentage,
+              completedAt: new Date()
+            }
+          }
+        },
+        { new: true }
+      );
+
+      if (!leaderboardEntry) {
+        return res.status(404).json({ error: 'User not found' });
       }
+
+    } catch (dbError) {
+      console.error('Database error:', dbError);
+      return res.status(500).json({ error: 'Database update failed' });
     }
-  
-    console.log('Score : ',score);
-    // You could store the result in a DB here if needed
-  
-    res.status(200).json({
-      message: 'Quiz submitted successfully',
-      quizId,
-      userId,
-      score,
-      total: correctAnswers.length
-    });
-  };
+  }
+
+  // Respond with quiz submission results
+  res.status(200).json({
+    message: 'Quiz submitted successfully',
+    quizId,
+    userId,
+    score,
+    percentage,
+    total: correctAnswers.length
+  });
+};
+
   
 
 // const getLeaderboard = async (req, res) => {
