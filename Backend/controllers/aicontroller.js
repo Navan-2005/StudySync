@@ -2,6 +2,7 @@ const quiz = require('../services/quiz');
 const User = require('../models/User'); // Assuming you have a User model
 const chatbot = require('../services/chatbot');
 const QuizModel=require('../models/QuizModel')
+const mentalchatbot=require('../services/mentalchatbot');
 
 const generateQuiz = async (req, res) => {
     const { topic } = req.body;
@@ -242,9 +243,24 @@ const getLeaderboard = async (req, res) => {
   }
 };
 
+const mentalhelper=async (req,res)=>{
+  const { prompt, history = [] } = req.body;
+
+  try {
+    const chat = await chatbot(prompt, history);
+    console.log(chat);
+    
+    res.status(200).json({ chat });
+  } catch (error) {
+    console.error("Controller error:", error);
+    res.status(500).json({ error: "Error generating reponse" });
+  }
+}
+
 module.exports = {
     generateQuiz,
     submitQuiz,
     chatBot,
-    getLeaderboard
+    getLeaderboard,
+    mentalhelper
 };
