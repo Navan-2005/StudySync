@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import AIAssistant from "./pages/AIAssistant";
 import Focuss from "./pages/Focuss";
+import Materials from "./pages/Materials";
 import NotFound from "./pages/NotFound";
 import QuizGenerator from './components/QuizGenerator'
 import QuizTaker from './components/QuizTaker'
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/assistant" element={<AIAssistant />} />
           <Route path="/focus" element={<Focuss />} />
+          <Route path="/materials" element={<Materials />} />
           <Route path='/quiz' element={<QuizGenerator />} />
           <Route path='/quiz/:id' element={<QuizTaker />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
