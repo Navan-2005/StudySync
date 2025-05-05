@@ -7,13 +7,10 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
 
-// Storage key for chat history
-const STORAGE_KEY = "ai-assistant-chat-history";
-
-// Helper to load messages from localStorage
+// Helper to load messages from sessionStorage instead of localStorage
 const loadMessages = () => {
   try {
-    const storedMessages = localStorage.getItem(STORAGE_KEY);
+    const storedMessages = sessionStorage.getItem("ai-assistant-chat-history");
     if (storedMessages) {
       // Parse stored messages and convert string timestamps back to Date objects
       return JSON.parse(storedMessages).map(msg => ({
@@ -25,19 +22,13 @@ const loadMessages = () => {
     console.error("Error loading chat history:", error);
   }
   
-  // Default welcome message if nothing is stored
-  return [
-    {
-      id: "welcome",
-      content: "Hello! I'm your AI study assistant. How can I help you today?",
-      isUser: false,
-      timestamp: new Date(),
-    },
-  ];
+  // Return an empty array as default
+  // No welcome message to avoid Google AI API issues with first message role
+  return [];
 };
 
 export function AIAssistantInterface() {
-  // Load messages from localStorage on initial render
+  // Load messages from sessionStorage on initial render
   const [messages, setMessages] = useState(loadMessages);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -53,10 +44,10 @@ export function AIAssistantInterface() {
     scrollToBottom();
   }, [messages]);
   
-  // Save messages to localStorage whenever they change
+  // Save messages to sessionStorage whenever they change
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+      sessionStorage.setItem("ai-assistant-chat-history", JSON.stringify(messages));
     } catch (error) {
       console.error("Error saving chat history:", error);
     }
@@ -97,13 +88,18 @@ export function AIAssistantInterface() {
     setVoiceState("thinking");
     
     try {
+      // Filter out the welcome message if it's the first message and prepare history
+      const chatHistory = messages
+        .filter((msg, index) => !(index === 0 && msg.id === "welcome"))
+        .map(msg => ({
+          role: msg.isUser ? "user" : "assistant",
+          content: msg.content
+        }));
+      
       // Make API call to backend
       const response = await axios.post('http://localhost:3000/ai/chatbot', {
         prompt: messageContent,
-        history: messages.map(msg => ({
-          role: msg.isUser ? "user" : "assistant",
-          content: msg.content
-        }))
+        history: chatHistory
       });
       
       // Process the API response based on your controller format
@@ -309,15 +305,9 @@ export function AIAssistantInterface() {
             size="sm" 
             onClick={() => {
               if (window.confirm("Are you sure you want to clear the chat history?")) {
-                setMessages([
-                  {
-                    id: "welcome",
-                    content: "Hello! I'm your AI study assistant. How can I help you today?",
-                    isUser: false,
-                    timestamp: new Date(),
-                  }
-                ]);
-                localStorage.removeItem(STORAGE_KEY);
+                // Start with an empty array instead of the welcome message to avoid API issues
+                setMessages([]);
+                sessionStorage.removeItem("ai-assistant-chat-history");
               }
             }}
             className="flex items-center gap-1"
@@ -340,6 +330,26 @@ export function AIAssistantInterface() {
       <Card className="flex-1 mb-4 bg-white/70 backdrop-blur-sm border border-gray-100 shadow-md">
         <ScrollArea className="h-full p-4">
           <div className="flex flex-col gap-4">
+            {/* Display welcome message only if there are no messages yet */}
+            {messages.length === 0 && (
+              <div className="flex justify-start">
+                <div className="max-w-[80%] rounded-xl p-3 bg-white border border-gray-100 shadow-sm">
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="w-5 h-5 rounded-full bg-gradient-primary flex items-center justify-center">
+                      <span className="text-white text-xs">AI</span>
+                    </div>
+                    <span className="text-xs text-brand-textSecondary">Assistant</span>
+                  </div>
+                  <p>Hello! I'm your AI study assistant. How can I help you today?</p>
+                  <div className="text-right mt-1">
+                    <span className="text-xs text-brand-textSecondary">
+                      {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+            
             {messages.map((message) => (
               <div 
                 key={message.id} 

@@ -1,6 +1,7 @@
 const quiz = require('../services/quiz');
 const User = require('../models/User'); // Assuming you have a User model
 const chatbot = require('../services/chatbot');
+const QuizModel=require('../models/QuizModel')
 
 const generateQuiz = async (req, res) => {
     const { topic } = req.body;
@@ -117,7 +118,6 @@ const generateQuiz = async (req, res) => {
 //     }
 // };
 
-const mongoose = require('mongoose');
 
 const submitQuiz = async (req, res) => {
   const { quizId, topic, userAnswers, correctAnswers, userId } = req.body;
@@ -127,13 +127,7 @@ const submitQuiz = async (req, res) => {
     return res.status(400).json({ error: 'Missing data in request' });
   }
 
-  // Validate ObjectId for userId
-  // let userObjectId;
-  // try {
-  //   userObjectId = mongoose.Types.ObjectId(userId); // Convert to ObjectId
-  // } catch (error) {
-  //   return res.status(400).json({ error: 'Invalid userId format' });
-  // }
+
 
   let score = 0;
   for (let i = 0; i < correctAnswers.length; i++) {
@@ -152,6 +146,35 @@ const submitQuiz = async (req, res) => {
       // Update the user's quiz results in the database
       const leaderboardEntry = await User.findByIdAndUpdate(
         userId,
+        {
+          $push: {
+            quizResults: {
+              quizId,
+              topic,
+              score,
+              percentage,
+              completedAt: new Date()
+            }
+          }
+        },
+        { new: true }
+      );
+
+      if (!leaderboardEntry) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+    } catch (dbError) {
+      console.error('Database error:', dbError);
+      return res.status(500).json({ error: 'Database update failed' });
+    }
+  }
+
+  if (quizId) {
+    try {
+      // Update the user's quiz results in the database
+      const leaderboardEntry = await QuizModel.findByIdAndUpdate(
+        quizId,
         {
           $push: {
             quizResults: {
