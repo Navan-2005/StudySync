@@ -170,34 +170,34 @@ const submitQuiz = async (req, res) => {
     }
   }
 
-  if (quizId) {
-    try {
-      // Update the user's quiz results in the database
-      const leaderboardEntry = await QuizModel.findByIdAndUpdate(
-        quizId,
-        {
-          $push: {
-            quizResults: {
-              quizId,
-              topic,
-              score,
-              percentage,
-              completedAt: new Date()
-            }
-          }
-        },
-        { new: true }
-      );
+  // if (quizId) {
+  //   try {
+  //     // Update the user's quiz results in the database
+  //     const leaderboardEntry = await QuizModel.findByIdAndUpdate(
+  //       quizId,
+  //       {
+  //         $push: {
+  //           quizResults: {
+  //             quizId,
+  //             topic,
+  //             score,
+  //             percentage,
+  //             completedAt: new Date()
+  //           }
+  //         }
+  //       },
+  //       { new: true }
+  //     );
 
-      if (!leaderboardEntry) {
-        return res.status(404).json({ error: 'User not found' });
-      }
+  //     if (!leaderboardEntry) {
+  //       return res.status(404).json({ error: 'User not found' });
+  //     }
 
-    } catch (dbError) {
-      console.error('Database error:', dbError);
-      return res.status(500).json({ error: 'Database update failed' });
-    }
-  }
+  //   } catch (dbError) {
+  //     console.error('Database error:', dbError);
+  //     return res.status(500).json({ error: 'Database update failed' });
+  //   }
+  // }
 
   // Respond with quiz submission results
   res.status(200).json({
