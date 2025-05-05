@@ -1,20 +1,44 @@
 import { useState, useRef, useEffect } from "react";
-import { SendHorizontal, Mic, MicOff, MessageSquare, Volume2, VolumeX } from "lucide-react";
+import { SendHorizontal, Mic, MicOff, Volume2, VolumeX, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
+import axios from "axios";
 
-export function AIAssistantInterface() {
-  const [messages, setMessages] = useState([
+// Storage key for chat history
+const STORAGE_KEY = "ai-assistant-chat-history";
+
+// Helper to load messages from localStorage
+const loadMessages = () => {
+  try {
+    const storedMessages = localStorage.getItem(STORAGE_KEY);
+    if (storedMessages) {
+      // Parse stored messages and convert string timestamps back to Date objects
+      return JSON.parse(storedMessages).map(msg => ({
+        ...msg,
+        timestamp: new Date(msg.timestamp)
+      }));
+    }
+  } catch (error) {
+    console.error("Error loading chat history:", error);
+  }
+  
+  // Default welcome message if nothing is stored
+  return [
     {
       id: "welcome",
       content: "Hello! I'm your AI study assistant. How can I help you today?",
       isUser: false,
       timestamp: new Date(),
     },
-  ]);
+  ];
+};
+
+export function AIAssistantInterface() {
+  // Load messages from localStorage on initial render
+  const [messages, setMessages] = useState(loadMessages);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
@@ -27,6 +51,15 @@ export function AIAssistantInterface() {
   // Auto-scroll to bottom on new messages
   useEffect(() => {
     scrollToBottom();
+  }, [messages]);
+  
+  // Save messages to localStorage whenever they change
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+    } catch (error) {
+      console.error("Error saving chat history:", error);
+    }
   }, [messages]);
 
   // Cleanup speech recognition on unmount
@@ -63,25 +96,57 @@ export function AIAssistantInterface() {
     setIsLoading(true);
     setVoiceState("thinking");
     
-    // Simulate AI response after a delay
-    setTimeout(() => {
-      const aiResponses = [
-        "That's a great question! Let me explain it for you...",
-        "I can help you understand this concept better. Here's what you need to know...",
-        "Based on your question, I think the key points to consider are...",
-        "Let me break this down for you in simple steps...",
-        "That's an interesting topic. Here's what the research shows..."
-      ];
+    try {
+      // Make API call to backend
+      const response = await axios.post('http://localhost:3000/ai/chatbot', {
+        prompt: messageContent,
+        history: messages.map(msg => ({
+          role: msg.isUser ? "user" : "assistant",
+          content: msg.content
+        }))
+      });
       
+      // Process the API response based on your controller format
+      let aiResponseContent;
+      
+      // Check if response has the chat property as shown in the controller
+      if (response.data && response.data.chat) {
+        if (typeof response.data.chat === 'string') {
+          aiResponseContent = response.data.chat;
+        } else if (typeof response.data.chat === 'object') {
+          // Try to extract text from common response formats
+          if (response.data.chat.text) {
+            aiResponseContent = response.data.chat.text;
+          } else if (response.data.chat.content) {
+            aiResponseContent = response.data.chat.content;
+          } else if (response.data.chat.message) {
+            aiResponseContent = response.data.chat.message;
+          } else {
+            // Safely stringify the object if no recognizable property is found
+            try {
+              aiResponseContent = JSON.stringify(response.data.chat);
+            } catch (e) {
+              aiResponseContent = "Received a response I couldn't display properly.";
+            }
+          }
+        } else {
+          // Fallback if chat is neither string nor object
+          aiResponseContent = "Received a response in an unexpected format.";
+        }
+      } else {
+        // Fallback if response doesn't contain chat property
+        aiResponseContent = "I'm sorry, I couldn't process that request.";
+      }
+      
+      // Add AI response
       const aiResponse = {
         id: generateId(),
-        content: aiResponses[Math.floor(Math.random() * aiResponses.length)],
+        content: aiResponseContent,
         isUser: false,
         timestamp: new Date(),
       };
       
       setMessages((prev) => [...prev, aiResponse]);
-      setIsLoading(false);
       
       // If voice is enabled, read the response
       if (voiceEnabled) {
@@ -90,7 +155,28 @@ export function AIAssistantInterface() {
       } else {
         setVoiceState("idle");
       }
-    }, 1500);
+    } catch (error) {
+      console.error("Error sending message:", error);
+      
+      // Add error message
+      const errorMessage = {
+        id: generateId(),
+        content: "Sorry, I encountered an error processing your request. Please try again.",
+        isUser: false,
+        timestamp: new Date(),
+      };
+      
+      setMessages((prev) => [...prev, errorMessage]);
+      setVoiceState("idle");
+      
+      toast({
+        title: "Error",
+        description: "Failed to get response from the server.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyDown = (e) => {
@@ -217,15 +303,38 @@ export function AIAssistantInterface() {
     <div className="flex flex-col h-[calc(100vh-140px)]">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-semibold">Ask Zone</h2>
-        <Button 
-          variant={voiceEnabled ? "default" : "outline"} 
-          size="sm" 
-          onClick={toggleVoiceOutput}
-          className={`${voiceEnabled ? 'bg-gradient-primary' : ''} flex items-center gap-1`}
-        >
-          {voiceEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
-          <span className="text-sm">{voiceEnabled ? "Voice On" : "Voice Off"}</span>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => {
+              if (window.confirm("Are you sure you want to clear the chat history?")) {
+                setMessages([
+                  {
+                    id: "welcome",
+                    content: "Hello! I'm your AI study assistant. How can I help you today?",
+                    isUser: false,
+                    timestamp: new Date(),
+                  }
+                ]);
+                localStorage.removeItem(STORAGE_KEY);
+              }
+            }}
+            className="flex items-center gap-1"
+          >
+            <Trash2 size={16} />
+            <span className="text-sm">Clear</span>
+          </Button>
+          <Button 
+            variant={voiceEnabled ? "default" : "outline"} 
+            size="sm" 
+            onClick={toggleVoiceOutput}
+            className={`${voiceEnabled ? 'bg-gradient-primary' : ''} flex items-center gap-1`}
+          >
+            {voiceEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
+            <span className="text-sm">{voiceEnabled ? "Voice On" : "Voice Off"}</span>
+          </Button>
+        </div>
       </div>
 
       <Card className="flex-1 mb-4 bg-white/70 backdrop-blur-sm border border-gray-100 shadow-md">
@@ -255,7 +364,7 @@ export function AIAssistantInterface() {
                       <span className="text-xs text-brand-textSecondary">Assistant</span>
                     </div>
                   )}
-                  <p>{message.content}</p>
+                  <p>{typeof message.content === 'object' ? JSON.stringify(message.content) : message.content}</p>
                   <div className="text-right mt-1">
                     <span className="text-xs text-brand-textSecondary">
                       {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
