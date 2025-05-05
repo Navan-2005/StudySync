@@ -121,14 +121,14 @@ const generateQuiz = async (req, res) => {
 
 const submitQuiz = async (req, res) => {
   const { quizId, topic, userAnswers, correctAnswers, userId } = req.body;
-
+ const user=await User.findById(userId);;
+ const username=user.username;
   // Validate required fields
-  if (!quizId || !userAnswers || !correctAnswers) {
+  if (!quizId || !userAnswers || !correctAnswers || !username) {
     return res.status(400).json({ error: 'Missing data in request' });
   }
 
-
-
+  // Calculate score
   let score = 0;
   for (let i = 0; i < correctAnswers.length; i++) {
     if (userAnswers[i] === correctAnswers[i]) {
@@ -136,15 +136,31 @@ const submitQuiz = async (req, res) => {
     }
   }
 
-  console.log('Score:', score);
+  const percentage = (score / correctAnswers.length) * 100;
 
-  const percentage = (score / userAnswers.length) * 100;
-  console.log('Percentage:', percentage);
+  try {
+    // Find or create the quiz entry
+    const quizEntry = await QuizModel.findOneAndUpdate(
+      { quizID: quizId },
+      {
+        $setOnInsert: { topic, createdAt: new Date() }, // Only set on insert
+        $push: {
+          users: {
+            username,
+            score,
+            percentage
+          }
+        }
+      },
+      { 
+        upsert: true, // Create if doesn't exist
+        new: true // Return the updated document
+      }
+    );
 
-  if (userId) {
-    try {
-      // Update the user's quiz results in the database
-      const leaderboardEntry = await User.findByIdAndUpdate(
+    // If you still want to update the user's quiz results (from your User model)
+    if (userId) {
+      await User.findByIdAndUpdate(
         userId,
         {
           $push: {
@@ -156,58 +172,24 @@ const submitQuiz = async (req, res) => {
               completedAt: new Date()
             }
           }
-        },
-        { new: true }
+        }
       );
-
-      if (!leaderboardEntry) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-
-    } catch (dbError) {
-      console.error('Database error:', dbError);
-      return res.status(500).json({ error: 'Database update failed' });
     }
+
+    // Respond with quiz submission results
+    res.status(200).json({
+      message: 'Quiz submitted successfully',
+      quizId,
+      userId,
+      score,
+      percentage,
+      total: correctAnswers.length
+    });
+
+  } catch (error) {
+    console.error('Database error:', error);
+    return res.status(500).json({ error: 'Database update failed' });
   }
-
-  // if (quizId) {
-  //   try {
-  //     // Update the user's quiz results in the database
-  //     const leaderboardEntry = await QuizModel.findByIdAndUpdate(
-  //       quizId,
-  //       {
-  //         $push: {
-  //           quizResults: {
-  //             quizId,
-  //             topic,
-  //             score,
-  //             percentage,
-  //             completedAt: new Date()
-  //           }
-  //         }
-  //       },
-  //       { new: true }
-  //     );
-
-  //     if (!leaderboardEntry) {
-  //       return res.status(404).json({ error: 'User not found' });
-  //     }
-
-  //   } catch (dbError) {
-  //     console.error('Database error:', dbError);
-  //     return res.status(500).json({ error: 'Database update failed' });
-  //   }
-  // }
-
-  // Respond with quiz submission results
-  res.status(200).json({
-    message: 'Quiz submitted successfully',
-    quizId,
-    userId,
-    score,
-    percentage,
-    total: correctAnswers.length
-  });
 };
 
 const chatBot=async(req,res)=>{
@@ -223,41 +205,46 @@ const chatBot=async(req,res)=>{
 }
   
 
-// const getLeaderboard = async (req, res) => {
-//     const { topic } = req.query;
-    
-//     try {
-//         const query = topic ? { 'quizResults.topic': topic } : {};
-        
-//         const leaderboard = await User.aggregate([
-//             { $match: query },
-//             { $unwind: '$quizResults' },
-//             ...(topic ? [{ $match: { 'quizResults.topic': topic } }] : []),
-//             { $sort: { 'quizResults.percentage': -1, 'quizResults.completedAt': 1 } },
-//             { $limit: 10 },
-//             {
-//                 $project: {
-//                     _id: 0,
-//                     userId: '$_id',
-//                     username: '$username',
-//                     topic: '$quizResults.topic',
-//                     score: '$quizResults.score',
-//                     percentage: '$quizResults.percentage',
-//                     completedAt: '$quizResults.completedAt'
-//                 }
-//             }
-//         ]);
-        
-//         res.status(200).json({ leaderboard });
-//     } catch (error) {
-//         console.error('Leaderboard retrieval error:', error);
-//         res.status(500).json({ error: 'Failed to retrieve leaderboard' });
-//     }
-// };
+const getLeaderboard = async (req, res) => {
+  try {
+      const { quizId } = req.params; // Assuming quizId comes from URL params
+
+      if (!quizId) {
+          return res.status(400).json({ error: 'Quiz ID is required' });
+      }
+
+      // Find the quiz and get users sorted by percentage in descending order
+      const quiz = await QuizModel.findOne(
+          { quizID: quizId },
+          { users: 1 } // Only return the users array
+      ).sort({ 'users.percentage': -1 }); // Sort users by percentage (highest first)
+
+      if (!quiz) {
+          return res.status(404).json({ error: 'Quiz not found' });
+      }
+
+      // Sort the users array by percentage (highest to lowest)
+      const sortedUsers = quiz.users.sort((a, b) => b.percentage - a.percentage);
+
+      // Optionally limit the number of results (e.g., top 10)
+      // const topUsers = sortedUsers.slice(0, 10);
+      console.log('leaderboard : ',sortedUsers);
+      
+      res.status(200).json({
+          success: true,
+          leaderboard: sortedUsers,
+          count: sortedUsers.length
+      });
+
+  } catch (error) {
+      console.error('Error fetching leaderboard:', error);
+      res.status(500).json({ error: 'Failed to fetch leaderboard' });
+  }
+};
 
 module.exports = {
     generateQuiz,
     submitQuiz,
-    chatBot
-    // getLeaderboard
+    chatBot,
+    getLeaderboard
 };

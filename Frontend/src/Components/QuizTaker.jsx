@@ -61,11 +61,12 @@ const QuizTaker = ({ onQuizComplete }) => {
         console.log('quiz id : ',quizData.quizId);
         console.log('user answers : ',userAnswers);
         console.log('correct answers : ',quizData.answers);
-        const userId = '6815c532759a26ff95250ef9';
-
+        // const userId = '6815c532759a26ff95250ef9';
+        const userId='68190f16024a7739b1a99ed1'
       // Mock the API call for demonstration
       const response=await axios.post('http://localhost:3000/ai/submit-quiz',
-         {quizId: quizData.quizId,
+        //  {quizId: quizData.quizId,
+        {quizId: '1746472076681',
           topic:quizData.topic,
           userAnswers: userAnswers,
           correctAnswers:quizData.answers,
