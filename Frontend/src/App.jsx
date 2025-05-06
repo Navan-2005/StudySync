@@ -12,7 +12,7 @@ import Focuss from "./pages/Focuss";
 import Materials from "./pages/Materials";
 import NotFound from "./pages/NotFound";
 import QuizGenerator from './components/QuizGenerator'
-import QuizTaker from './components/QuizTaker'
+import QuizTaker from './Components/QuizTaker'
 import { Focus } from "lucide-react";
 
 const queryClient = new QueryClient();

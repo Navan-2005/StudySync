@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Mic, MicOff, Video, VideoOff, Bell, Timer } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import { MiniTimer } from "@/components/focus/MiniTimer";
 
 export function TopBar({ roomName = "Study Room #1", className }) {
   const [micOn, setMicOn] = useState(true);
@@ -16,14 +17,9 @@ export function TopBar({ roomName = "Study Room #1", className }) {
 
       <div className="flex items-center gap-3">
         <div className={`px-3 py-2 rounded-lg flex items-center gap-2 ${timerActive ? 'bg-brand-purple/10' : 'bg-gray-100'}`}>
-          <Timer size={18} className={timerActive ? 'text-brand-purple' : ''} />
-          <span className={`font-medium ${timerActive ? 'text-brand-purple' : ''}`}>
-            {timerActive ? '24:32' : 'Start Timer'}
-          </span>
-          <Switch 
-            checked={timerActive}
-            onCheckedChange={setTimerActive}
-          />
+        <MiniTimer />
+         
+          
         </div>
 
         <div className="flex gap-2">
