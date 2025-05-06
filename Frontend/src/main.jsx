@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
@@ -15,18 +14,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <App />
       </React.StrictMode>
     </PersistGate>
-=======
-import React from "react";
-import ReactDOM from "react-dom/client"; // Use createRoot from react-dom/client
-import { Provider } from "react-redux";
-import store from "./Redux/store";
-import App from "./App";
-import "./index.css";
-
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-  <Provider store={store}>
-    <App />
->>>>>>> b3164ce03610af2e9b2bf060195bc66e3055665c
   </Provider>
 );
