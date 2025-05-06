@@ -1,64 +1,76 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Button } from "@/components/ui/button";
 import { Play, Pause, RotateCcw } from "lucide-react";
+import { startTimer, pauseTimer, resetTimer, updateTimer } from "../../Redux/features/PomodoroSlice";
 
-export function PomodoroTimer({
-  initialMinutes = 25,
-  initialSeconds = 0
-}) {
-  const [minutes, setMinutes] = useState(initialMinutes);
-  const [seconds, setSeconds] = useState(initialSeconds);
-  const [isActive, setIsActive] = useState(false);
-  const [progress, setProgress] = useState(100);
+export function PomodoroTimer() {
+  const dispatch = useDispatch();
   
-  const totalSeconds = initialMinutes * 60 + initialSeconds;
+  // Handle potential undefined state by providing default values
+  const pomodoroState = useSelector((state) => state?.pomodoro);
   
+  // Default values if Redux store is not ready
+  const minutes = pomodoroState?.minutes ?? 25;
+  const seconds = pomodoroState?.seconds ?? 0;
+  const isActive = pomodoroState?.isActive ?? false;
+  const progress = pomodoroState?.progress ?? 0;
+  const mode = pomodoroState?.mode ?? 'work';
+
   useEffect(() => {
+    // Update timer every second when active
     let interval = null;
     
-    if (isActive) {
+    if (isActive && pomodoroState) {
       interval = setInterval(() => {
-        if (seconds === 0) {
-          if (minutes === 0) {
-            clearInterval(interval);
-            setIsActive(false);
-            // Timer completed
-            return;
-          }
-          setMinutes(minutes - 1);
-          setSeconds(59);
-        } else {
-          setSeconds(seconds - 1);
-        }
-        
-        // Calculate progress
-        const remainingSeconds = minutes * 60 + seconds;
-        const progressValue = (remainingSeconds / totalSeconds) * 100;
-        setProgress(progressValue);
-        
+        dispatch(updateTimer());
       }, 1000);
-    } else if (interval) {
-      clearInterval(interval);
     }
     
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isActive, minutes, seconds, totalSeconds]);
-  
+  }, [isActive, dispatch, pomodoroState]);
+
+  // Background timer update - runs when component is mounted or re-rendered
+  useEffect(() => {
+    // Only dispatch if Redux store is initialized
+    if (pomodoroState) {
+      // Update timer to account for time passed while away
+      dispatch(updateTimer());
+      
+      // Setup an interval that runs even when not focused on component
+      const backgroundInterval = setInterval(() => {
+        dispatch(updateTimer());
+      }, 1000);
+      
+      return () => clearInterval(backgroundInterval);
+    }
+  }, [dispatch, pomodoroState]);
+
   const toggleTimer = () => {
-    setIsActive(!isActive);
+    if (!pomodoroState) return;
+    
+    if (isActive) {
+      dispatch(pauseTimer());
+    } else {
+      dispatch(startTimer());
+    }
   };
-  
-  const resetTimer = () => {
-    setIsActive(false);
-    setMinutes(initialMinutes);
-    setSeconds(initialSeconds);
-    setProgress(100);
+
+  const handleReset = () => {
+    if (!pomodoroState) return;
+    dispatch(resetTimer());
   };
-  
+
+  const timerColor = mode === 'work' ? 'text-blue-500' : 'text-green-500';
+
   return (
     <div className="flex flex-col items-center">
+      <div className="text-lg font-medium mb-2">
+        {mode === 'work' ? 'Work Session' : 'Break Time'}
+      </div>
+      
       <div className="relative w-64 h-64 mb-8">
         <svg className="w-full h-full" viewBox="0 0 100 100">
           <circle
@@ -71,7 +83,7 @@ export function PomodoroTimer({
             cy="50"
           />
           <circle
-            className="text-brand-purple transition-all duration-1000 ease-linear"
+            className={`transition-all duration-1000 ease-linear ${timerColor}`}
             strokeWidth="4"
             strokeDasharray={283}
             strokeDashoffset={283 - (progress / 100) * 283}
@@ -89,18 +101,18 @@ export function PomodoroTimer({
           </span>
         </div>
       </div>
-      
+
       <div className="flex gap-4">
         <Button
           onClick={toggleTimer}
-          className="bg-gradient-primary hover:opacity-90 rounded-full w-14 h-14"
+          className={`hover:opacity-90 rounded-full w-14 h-14 ${mode === 'work' ? 'bg-blue-500' : 'bg-green-500'}`}
           size="icon"
         >
           {isActive ? <Pause size={24} /> : <Play size={24} />}
         </Button>
         
         <Button
-          onClick={resetTimer}
+          onClick={handleReset}
           variant="outline"
           size="icon"
           className="rounded-full w-14 h-14"
