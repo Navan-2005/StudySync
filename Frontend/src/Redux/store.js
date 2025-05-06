@@ -1,7 +1,8 @@
 // store.js
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import { userSlice } from './features/userslice';
+import { userSlice } from './features/userSlice';
 import PomodoroReducer from './features/PomodoroSlice';
+
 
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
