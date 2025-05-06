@@ -10,13 +10,20 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { toast } from "sonner";
+import axios from "axios";
+import { useSelector,useDispatch } from "react-redux";
+import { setUser } from "../Redux/features/userSlice";
 
 const loginSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z.string().min(3, "Password must be at least 3 characters"),
 });
 
 export default function Login() {
+   
+  const {user}=useSelector((state)=>state.user);
+  const dispatch=useDispatch();
+  
   const [showPassword, setShowPassword] = useState(false);
   
   const form = useForm({
@@ -27,8 +34,15 @@ export default function Login() {
     },
   });
 
-  function onSubmit(data) {
+  async function onSubmit(data) {
     console.log("Login form submitted:", data);
+    const response=await axios.post('http://localhost:3000/users/login',{email:data.username,password:data.password});
+    if(response.status===200){
+      localStorage.setItem('token',response.data.token);
+      dispatch(setUser(response.data.user));
+      console.log(response.data.user);
+      
+    }
     toast.success("Login successful (demo mode)", {
       description: `Welcome back, ${data.username}! This is just a demo, no actual authentication yet.`,
     });
