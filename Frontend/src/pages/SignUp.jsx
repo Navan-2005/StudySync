@@ -10,12 +10,15 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { toast } from "sonner";
+import { useSelector,useDispatch } from "react-redux";
+import { setUser } from "../Redux/features/userSlice";
+import axios from "axios";
 
 const signupSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
   email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string().min(6, "Password must be at least 6 characters"),
+  password: z.string().min(3, "Password must be at least 3 characters"),
+  confirmPassword: z.string().min(3, "Password must be at least 3 characters"),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],
@@ -35,12 +38,43 @@ export default function Signup() {
     },
   });
 
-  function onSubmit(data) {
+  async function onSubmit(data) {
     console.log("Signup form submitted:", data);
-    toast.success("Account created successfully (demo mode)", {
-      description: `Welcome, ${data.username}! This is just a demo, no actual account was created.`,
-    });
-  }
+    try {
+      const userdata = {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        
+      };
+  
+      const response = await axios.post('http://localhost:3000/users/signup', userdata);
+      console.log('Response : ',response);
+  
+       if (response.status === 200) {
+        console.log('User created:', response.data.user.username);
+        const {token,user}=response.data;
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        dispatch(setUser(response.data.user));
+        toast({
+          title: "Account created successfully",
+          description: "Welcome to our platform!",
+        });
+  
+        // navigate("/");
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 409) {
+        alert(error.response.data.message || "User Already Exists");
+      } else {
+        console.log(error);
+        
+        alert("Something went wrong. Please try again.");
+      }} finally {
+      
+    }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-background to-muted p-4">
