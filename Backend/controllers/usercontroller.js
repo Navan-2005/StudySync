@@ -1,4 +1,5 @@
 const User=require('../models/User')
+const {getYoutubeVideos}=require('../services/getyoutubevideo');
 
 const createUser = async (req, res) => {
     try {
@@ -53,9 +54,22 @@ const createUser = async (req, res) => {
   }
   const getprofile=async(req,res)=>{res.send(req.user);};
 
+  const getvideos=async(req,res)=>{
+    const {topic}=req.body;
+    try {
+      const videos=await getYoutubeVideos(topic);
+      res.status(200).json(videos);
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ error: error.message });
+    }
+  }
+  
+
   module.exports={
     createUser,
     getUsers,
     loginuser,
-    getprofile
+    getprofile,
+    getvideos
   }
