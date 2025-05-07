@@ -12,7 +12,7 @@ import Focuss from "./pages/Focuss";
 import Video from "./pages/Video";
 import Materials from "./pages/Materials";
 import NotFound from "./pages/NotFound";
-import QuizGenerator from './components/QuizGenerator'
+import Quiz from './pages/Quiz'
 import QuizTaker from './Components/QuizTaker'
 import { Focus } from "lucide-react";
 import VideoRoom from "./pages/VideoRoom";
@@ -35,7 +35,7 @@ const App = () => (
           <Route path="/materials" element={<Materials />} />
           <Route path="/room" element={<Video />} />
         
-          <Route path='/quiz' element={<QuizGenerator />} />
+          <Route path='/quiz' element={<Quiz />} />
           <Route path='/quiz/:id' element={<QuizTaker />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
