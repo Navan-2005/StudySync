@@ -14,7 +14,10 @@ import Materials from "./pages/Materials";
 import NotFound from "./pages/NotFound";
 import Quiz from './pages/Quiz'
 import QuizTaker from './Components/QuizTaker'
+
+import VideoRoom from "./pages/VideoRoom";
 import { Focus } from "lucide-react";
+import { QuizRoom } from "./Pages/QuizRoom";
 
 const queryClient = new QueryClient();
 
