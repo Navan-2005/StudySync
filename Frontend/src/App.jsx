@@ -9,12 +9,12 @@ import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import AIAssistant from "./pages/AIAssistant";
 import Focuss from "./pages/Focuss";
+import Video from "./pages/Video";
 import Materials from "./pages/Materials";
 import NotFound from "./pages/NotFound";
-import QuizGenerator from './components/QuizGenerator'
+import Quiz from './pages/Quiz'
 import QuizTaker from './Components/QuizTaker'
 import { Focus } from "lucide-react";
-import { QuizRoom } from "./Pages/QuizRoom";
 
 const queryClient = new QueryClient();
 
@@ -32,7 +32,9 @@ const App = () => (
           <Route path="/assistant" element={<AIAssistant />} />
           <Route path="/focus" element={<Focuss />} />
           <Route path="/materials" element={<Materials />} />
-          <Route path='/quiz' element={<QuizGenerator />} />
+          <Route path="/room" element={<Video />} />
+        
+          <Route path='/quiz' element={<Quiz />} />
           <Route path='/quiz/:id' element={<QuizTaker />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="/quizroom" element={<QuizRoom />} />
