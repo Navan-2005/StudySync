@@ -116,8 +116,16 @@ const QuizGenerator = ({ isLoggedIn }) => {
       
       if (response.data && response.data.quizId) {
         // Pass quizData as state to QuizTaker
-        navigate(`/quiz/${response.data.quizId}`, { state: response.data,quizId: response.data.quizId, roomId: roomId });
-      } else {
+        console.log('RoomId in quiz generator : ',roomId);
+        
+        navigate(`/quiz/${response.data.quizId}`, { 
+          state: {
+            ...response.data,
+            quizId: response.data.quizId,
+            roomId: roomId
+          }
+        });}
+         else {
         setError('Failed to generate quiz. Please try again.');
       }
     } catch (error) {

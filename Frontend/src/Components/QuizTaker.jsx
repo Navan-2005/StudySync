@@ -67,6 +67,9 @@ const QuizTaker = ({ onQuizComplete }) => {
         console.log('correct answers : ',quizData.answers);
         // const userId = '6815c532759a26ff95250ef9';
         const userId=user._id;
+        console.log('userId : ',userId);
+        console.log(typeof(userId));
+        
       // Mock the API call for demonstration
       const response=await axios.post('http://localhost:3000/ai/submit-quiz',
         //  {quizId: quizData.quizId,
@@ -81,7 +84,8 @@ const QuizTaker = ({ onQuizComplete }) => {
       }
       const score=response.data.score;
       const percentage=response.data.percentage;
-
+      console.log('RoomId : ',roomId);
+      
       const result=await axios.post('http://localhost:3000/rooms/submit',
         {roomId:roomId,
         // quizId:quizId,

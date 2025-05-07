@@ -122,7 +122,7 @@ const generateQuiz = async (req, res) => {
 
 const submitQuiz = async (req, res) => {
   const { quizId, topic, userAnswers, correctAnswers, userId } = req.body;
- const user=await User.findById(userId);;
+ const user=await User.findById(userId);
  const username=user.username;
   // Validate required fields
   if (!quizId || !userAnswers || !correctAnswers || !username) {
@@ -142,7 +142,7 @@ const submitQuiz = async (req, res) => {
   try {
     // Find or create the quiz entry
     const quizEntry = await QuizModel.findOneAndUpdate(
-      { quizID: quizId },
+      { quizId: quizId },
       {
         $setOnInsert: { topic, createdAt: new Date() }, // Only set on insert
         $push: {
