@@ -1,13 +1,17 @@
 
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 // import quiz from '../../../Backend/services/quiz';
 import axios from 'axios';
 
 const QuizTaker = ({ onQuizComplete }) => {
   // Mock quiz data for demonstration
   const location = useLocation();
+  const {user}=useSelector((state)=>state.user);
   const quizData = location.state;
+  const roomId = location.state && location.state.roomId;
+  const quizId = location.state && location.state.quizId;
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
@@ -62,11 +66,11 @@ const QuizTaker = ({ onQuizComplete }) => {
         console.log('user answers : ',userAnswers);
         console.log('correct answers : ',quizData.answers);
         // const userId = '6815c532759a26ff95250ef9';
-        const userId='68190f16024a7739b1a99ed1'
+        const userId=user._id;
       // Mock the API call for demonstration
       const response=await axios.post('http://localhost:3000/ai/submit-quiz',
         //  {quizId: quizData.quizId,
-        {quizId: '1746472076681',
+        {quizId:quizId,
           topic:quizData.topic,
           userAnswers: userAnswers,
           correctAnswers:quizData.answers,
@@ -74,6 +78,19 @@ const QuizTaker = ({ onQuizComplete }) => {
       if(response.status === 200){
         console.log('Score : ',response.data.score);
         setSubmitting(false);
+      }
+      const score=response.data.score;
+      const percentage=response.data.percentage;
+
+      const result=await axios.post('http://localhost:3000/rooms/submit',
+        {roomId:roomId,
+        // quizId:quizId,
+        userId:userId,
+        score:score,
+        percentage:percentage});
+      if(result.status === 200){
+        console.log('Result : ',result.data);
+        
       }
     } catch (error) {
       console.error('Error submitting quiz:', error);

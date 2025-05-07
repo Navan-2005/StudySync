@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const roomSchema = new mongoose.Schema({
   roomId: { type: String, required: true, unique: true },
-  quizId: { type: String, required: true },
+  // quizId: { type: String, required: true },
   host: { type: String, required: true }, // User ID of host
   participants: [{
     userId: String,

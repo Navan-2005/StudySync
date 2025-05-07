@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 
@@ -7,8 +7,9 @@ const QuizGenerator = ({ isLoggedIn }) => {
   const [topic, setTopic] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const location = useLocation();
   const navigate = useNavigate();
-
+  const roomId = location.state && location.state.roomId;
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -26,7 +27,7 @@ const QuizGenerator = ({ isLoggedIn }) => {
       
       if (response.data && response.data.quizId) {
         // Pass quizData as state to QuizTaker
-        navigate(`/quiz/${response.data.quizId}`, { state: response.data });
+        navigate(`/quiz/${response.data.quizId}`, { state: response.data,quizId: response.data.quizId, roomId: roomId });
       } else {
         setError('Failed to generate quiz. Please try again.');
       }

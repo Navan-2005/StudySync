@@ -3,8 +3,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
+import Login from "./Pages/Login";
+import SignUp from "./Pages/SignUp";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import AIAssistant from "./pages/AIAssistant";
@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 import QuizGenerator from './components/QuizGenerator'
 import QuizTaker from './Components/QuizTaker'
 import { Focus } from "lucide-react";
+import { QuizRoom } from "./Pages/QuizRoom";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
           <Route path='/quiz' element={<QuizGenerator />} />
           <Route path='/quiz/:id' element={<QuizTaker />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/quizroom" element={<QuizRoom />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

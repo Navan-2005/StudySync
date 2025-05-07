@@ -5,14 +5,13 @@ const { getIO } = require('../services/socket');
 // Create a new quiz room
 exports.createRoom = async (req, res) => {
   try {
-    const { quizId, userId, username } = req.body;
+    const { userId, username } = req.body;
     
     // Generate unique room ID
     const roomId = Math.random().toString(36).substring(2, 8).toUpperCase();
     
     const room = new Room({
       roomId,
-      quizId,
       host: userId,
       participants: [{
         userId,
@@ -128,32 +127,32 @@ exports.getLeaderboard = async (req, res) => {
 };
 
 // Get quiz for a room
-exports.getRoomQuiz = async (req, res) => {
-    try {
-      const { roomId } = req.params;
+// exports.getRoomQuiz = async (req, res) => {
+//     try {
+//       const { roomId } = req.params;
       
-      const room = await Room.findOne({ roomId });
-      if (!room) return res.status(404).json({ error: 'Room not found' });
+//       const room = await Room.findOne({ roomId });
+//       if (!room) return res.status(404).json({ error: 'Room not found' });
       
-      const quiz = await Quiz.findOne({ quizId: room.quizId });
-      if (!quiz) return res.status(404).json({ error: 'Quiz not found' });
+//       const quiz = await Quiz.findOne({ quizId: room.quizId });
+//       if (!quiz) return res.status(404).json({ error: 'Quiz not found' });
       
-      // Return quiz without correct answers
-      const quizForParticipants = {
-        ...quiz.toObject(),
-        questions: quiz.questions.map(q => ({
-          questionText: q.questionText,
-          options: q.options,
-          timeLimit: q.timeLimit
-        }))
-      };
+//       // Return quiz without correct answers
+//       const quizForParticipants = {
+//         ...quiz.toObject(),
+//         questions: quiz.questions.map(q => ({
+//           questionText: q.questionText,
+//           options: q.options,
+//           timeLimit: q.timeLimit
+//         }))
+//       };
       
-      res.status(200).json({
-        success: true,
-        quiz: quizForParticipants
-      });
+//       res.status(200).json({
+//         success: true,
+//         quiz: quizForParticipants
+//       });
       
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  };
+//     } catch (error) {
+//       res.status(500).json({ error: error.message });
+//     }
+//   };
