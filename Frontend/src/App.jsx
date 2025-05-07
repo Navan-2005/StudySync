@@ -31,6 +31,7 @@ const App = () => (
           <Route path="/assistant" element={<AIAssistant />} />
           <Route path="/focus" element={<Focuss />} />
           <Route path="/materials" element={<Materials />} />
+        
           <Route path='/quiz' element={<QuizGenerator />} />
           <Route path='/quiz/:id' element={<QuizTaker />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
