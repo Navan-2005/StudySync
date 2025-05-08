@@ -2,16 +2,18 @@ import * as React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import ChatbotComp from "../components/ai/ChatbotComp";
+import { FaQuestionCircle } from 'react-icons/fa'
 
 function getRoomID() {
   const params = new URLSearchParams(window.location.search);
   let roomID = params.get('roomID');
   if (!roomID) {
     roomID = Math.random().toString(36).substring(2, 8);
-    window.history.replaceState(null, '', `?roomID=${roomID}`);
+    window.history.replaceState(null, '', `/room?roomID=${roomID}`);
   }
   return roomID;
 }
+
 
 export default function App() {
   const [userName, setUserName] = useState('');
@@ -120,7 +122,16 @@ export default function App() {
         ref={containerRef} 
         className="w-full h-screen bg-gray-900" 
       />
-      {showChatbot && <ChatbotComp />}
+      <div className="fixed bottom-24 right-6 flex flex-col gap-4 items-end z-50">
+        <button
+          onClick={() => window.location.href = '/quiz'}
+          className="flex items-center gap-2 px-4 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-full shadow-lg transition-all duration-300 transform hover:scale-105"
+        >
+          <FaQuestionCircle className="text-lg" />
+          <span>Q</span>
+        </button>
+        {showChatbot && <ChatbotComp />}
+      </div>
     </>
   );
 }
