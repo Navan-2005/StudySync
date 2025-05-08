@@ -499,7 +499,7 @@ import axios from 'axios'
 
 // const ELEVEN_LABS_API_KEY = "sk_998f57462046816091acd0bb03d7c82b08f1579296fda36a"; // User will need to provide this
 const ELEVEN_LABS_API_KEY = ""; // User will need to provide this
-// sk_998f57462046816091acd0bb03d7c82b08f1579296fda36a
+
 // Voice settings for ElevenLabs
 const VOICE_ID = "PB6BdkFkZLbI39GHdnbQ"; 
 const MODEL_ID = "eleven_multilingual_v2"; // High quality model

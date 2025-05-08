@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
+import ChatbotComp from "../components/ai/ChatbotComp";
 
 function getRoomID() {
   const params = new URLSearchParams(window.location.search);
@@ -16,6 +17,7 @@ export default function App() {
   const [userName, setUserName] = useState('');
   const [joined, setJoined] = useState(false);
   const [hasLeft, setHasLeft] = useState(false);
+  const [showChatbot, setShowChatbot] = useState(false);
   const roomID = getRoomID();
   const containerRef = useRef(null);
 
@@ -46,8 +48,12 @@ export default function App() {
           setHasLeft(true);
           setJoined(false);
           setUserName('');
+          setShowChatbot(false);
         },
       });
+
+      // Show chatbot after joining the room
+      setShowChatbot(true);
     }
   }, [joined]);
 
@@ -109,9 +115,12 @@ export default function App() {
   }
 
   return (
-    <div 
-      ref={containerRef} 
-      className="w-full h-screen bg-gray-900" 
-    />
+    <>
+      <div 
+        ref={containerRef} 
+        className="w-full h-screen bg-gray-900" 
+      />
+      {showChatbot && <ChatbotComp />}
+    </>
   );
 }
