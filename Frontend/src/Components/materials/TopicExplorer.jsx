@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Search, Mic, Bookmark, Play } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 
@@ -9,62 +9,49 @@ export function TopicExplorer() {
   const [isSearching, setIsSearching] = useState(false);
   const [searchResult, setSearchResult] = useState(null);
 
-  const handleSearch = async() => {
+  const handleSearch = async () => {
     if (!searchTerm) return;
     
     setIsSearching(true);
     try {
-       const responce=await axios.post('http://localhost:3000/users/video',{topic:searchTerm});
-       console.log(responce.data);      
-        
-    // Simulate API call delay
-    setTimeout(() => {
-      // Mock data
-      // setSearchResult({
-      //   summary: "Photosynthesis is the process by which plants and some other organisms use sunlight to synthesize nutrients from carbon dioxide and water. It's a vital process that produces oxygen as a byproduct, which most living organisms need for survival.",
-      //   keyPoints: [
-      //     "Occurs primarily in the chloroplasts of plant cells",
-      //     "Requires sunlight, water, and carbon dioxide",
-      //     "Produces glucose and oxygen",
-      //     "Has light-dependent and light-independent reactions",
-      //     "Essential for maintaining atmospheric oxygen levels"
-      //   ],
-      //   videos: [
-      //     {
-      //       id: "v1",
-      //       title: "Photosynthesis | Educational Video for Kids",
-      //       channel: "Science Explained",
-      //       duration: "8:24",
-      //       thumbnail: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=225&fit=crop",
-      //       saved: false
-      //     },
-      //     {
-      //       id: "v2",
-      //       title: "Photosynthesis: Light Reaction, Calvin Cycle, and Electron Transport",
-      //       channel: "Professor Bio",
-      //       duration: "12:16",
-      //       thumbnail: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=225&fit=crop",
-      //       saved: false
-      //     },
-      //     {
-      //       id: "v3",
-      //       title: "Understanding Photosynthesis in 5 Minutes",
-      //       channel: "Quick Science",
-      //       duration: "5:05",
-      //       thumbnail: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=225&fit=crop",
-      //       saved: false
-      //     }
-      //   ]
-      // });
-      setSearchResult({
-        videos: responce.data
-      })
+      const response = await axios.post('http://localhost:3000/users/video', { topic: searchTerm });
+      console.log("API Response:", response.data);
       
+      // Transform YouTube API response to match the expected format in our UI
+      const transformedVideos = response.data.map(item => ({
+        id: item.id.videoId,
+        title: item.snippet.title,
+        channel: item.snippet.channelTitle,
+        duration: "Unknown", // YouTube API response doesn't include duration
+        thumbnail: item.snippet.thumbnails.medium ? item.snippet.thumbnails.medium.url : "/api/placeholder/400/225",
+        description: item.snippet.description,
+        publishedAt: new Date(item.snippet.publishedAt).toLocaleDateString(),
+        saved: false
+      }));
+      
+      // Generate some topic information based on the search term
+      setSearchResult({
+        summary: `${searchTerm} is a popular topic with various educational resources available online.`,
+        keyPoints: [
+          `Learn about ${searchTerm} through video tutorials`,
+          `Explore key concepts related to ${searchTerm}`,
+          `Understand practical applications of ${searchTerm}`,
+          `Discover the latest developments in ${searchTerm}`,
+          `Find resources to deepen your knowledge of ${searchTerm}`
+        ],
+        videos: transformedVideos
+      });
+      
+    } catch (error) {
+      console.error('Error fetching videos:', error);
+      setSearchResult({
+        summary: `Sorry, we encountered an error while searching for "${searchTerm}".`,
+        keyPoints: ["Please try again later or with a different search term."],
+        videos: []
+      });
+    } finally {
       setIsSearching(false);
-    }, 1500);
-  } catch (error) {
-    console.log('Error: ',error);      
-  }
+    }
   };
 
   const toggleSavedVideo = (id) => {
@@ -80,7 +67,7 @@ export function TopicExplorer() {
 
   const handleMicClick = () => {
     // For simplicity, just set a sample search term
-    setSearchTerm("Photosynthesis");
+    setSearchTerm("AI Engineer Salary");
     setTimeout(() => {
       handleSearch();
     }, 500);
@@ -97,7 +84,7 @@ export function TopicExplorer() {
           <input
             type="text"
             className="w-full border border-gray-200 rounded-full py-2 px-4 pl-10 pr-12"
-            placeholder="e.g., Photosynthesis, Newton's Laws..."
+            placeholder="e.g., AI Engineer Salary, Machine Learning..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
@@ -171,6 +158,7 @@ export function TopicExplorer() {
                       <div>
                         <h4 className="font-medium text-sm line-clamp-2">{video.title}</h4>
                         <p className="text-xs text-brand-textSecondary mt-1">{video.channel}</p>
+                        <p className="text-xs text-brand-textSecondary mt-0.5">{video.publishedAt}</p>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-xs bg-gray-100 px-2 py-0.5 rounded">
@@ -185,7 +173,12 @@ export function TopicExplorer() {
                           >
                             <Bookmark size={14} className={video.saved ? "fill-brand-purple text-brand-purple" : ""} />
                           </Button>
-                          <Button size="icon" variant="ghost" className="h-7 w-7">
+                          <Button 
+                            size="icon" 
+                            variant="ghost" 
+                            className="h-7 w-7" 
+                            onClick={() => window.open(`https://www.youtube.com/watch?v=${video.id}`, '_blank')}
+                          >
                             <Play size={14} />
                           </Button>
                         </div>
