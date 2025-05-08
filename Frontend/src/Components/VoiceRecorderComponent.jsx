@@ -15,6 +15,8 @@ export default function VoiceToTextComponent() {
   const [backendUrl, setBackendUrl] = useState('https://api.example.com/transcriptions');
   const [uploadStatus, setUploadStatus] = useState(null); // null, 'uploading', 'success', 'error'
   const [autoUpload, setAutoUpload] = useState(false);
+
+  
   
   const recognitionRef = useRef(null);
   const streamRef = useRef(null);
