@@ -7,7 +7,7 @@ import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
-import AIAssistant from "./pages/AIAssistant";
+import AIAssistant from "./Pages/AIAssistant";
 import Focuss from "./pages/Focuss";
 import Video from "./pages/Video";
 import Materials from "./pages/Materials";

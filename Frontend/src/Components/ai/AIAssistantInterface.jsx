@@ -70,110 +70,110 @@
 //   // Generate a random ID for messages
 //   const generateId = () => Math.random().toString(36).substring(2, 10);
 
-//   const handleSendMessage = async (content) => {
-//     const messageContent = content || inputValue;
-//     if (messageContent.trim() === "") return;
+  // const handleSendMessage = async (content) => {
+  //   const messageContent = content || inputValue;
+  //   if (messageContent.trim() === "") return;
     
-//     // Add user message
-//     const userMessage = {
-//       id: generateId(),
-//       content: messageContent,
-//       isUser: true,
-//       timestamp: new Date(),
-//     };
+  //   // Add user message
+  //   const userMessage = {
+  //     id: generateId(),
+  //     content: messageContent,
+  //     isUser: true,
+  //     timestamp: new Date(),
+  //   };
     
-//     setMessages((prev) => [...prev, userMessage]);
-//     setInputValue("");
-//     setIsLoading(true);
-//     setVoiceState("thinking");
+  //   setMessages((prev) => [...prev, userMessage]);
+  //   setInputValue("");
+  //   setIsLoading(true);
+  //   setVoiceState("thinking");
     
-//     try {
-//       // Filter out the welcome message if it's the first message and prepare history
-//       const chatHistory = messages
-//         .filter((msg, index) => !(index === 0 && msg.id === "welcome"))
-//         .map(msg => ({
-//           role: msg.isUser ? "user" : "assistant",
-//           content: msg.content
-//         }));
+  //   try {
+  //     // Filter out the welcome message if it's the first message and prepare history
+  //     const chatHistory = messages
+  //       .filter((msg, index) => !(index === 0 && msg.id === "welcome"))
+  //       .map(msg => ({
+  //         role: msg.isUser ? "user" : "assistant",
+  //         content: msg.content
+  //       }));
       
-//       // Make API call to backend
-//       const response = await axios.post('http://localhost:3000/ai/chatbot', {
-//         prompt: messageContent,
-//         history: chatHistory
-//       });
+  //     // Make API call to backend
+  //     const response = await axios.post('http://localhost:3000/ai/chatbot', {
+  //       prompt: messageContent,
+  //       history: chatHistory
+  //     });
       
-//       // Process the API response based on your controller format
-//       let aiResponseContent;
+  //     // Process the API response based on your controller format
+  //     let aiResponseContent;
       
-//       // Check if response has the chat property as shown in the controller
-//       if (response.data && response.data.chat) {
-//         if (typeof response.data.chat === 'string') {
-//           aiResponseContent = response.data.chat;
-//         } else if (typeof response.data.chat === 'object') {
-//           // Try to extract text from common response formats
-//           if (response.data.chat.text) {
-//             aiResponseContent = response.data.chat.text;
-//           } else if (response.data.chat.content) {
-//             aiResponseContent = response.data.chat.content;
-//           } else if (response.data.chat.message) {
-//             aiResponseContent = response.data.chat.message;
-//           } else {
-//             // Safely stringify the object if no recognizable property is found
-//             try {
-//               aiResponseContent = JSON.stringify(response.data.chat);
-//             } catch (e) {
-//               aiResponseContent = "Received a response I couldn't display properly.";
-//             }
-//           }
-//         } else {
-//           // Fallback if chat is neither string nor object
-//           aiResponseContent = "Received a response in an unexpected format.";
-//         }
-//       } else {
-//         // Fallback if response doesn't contain chat property
-//         aiResponseContent = "I'm sorry, I couldn't process that request.";
-//       }
+  //     // Check if response has the chat property as shown in the controller
+  //     if (response.data && response.data.chat) {
+  //       if (typeof response.data.chat === 'string') {
+  //         aiResponseContent = response.data.chat;
+  //       } else if (typeof response.data.chat === 'object') {
+  //         // Try to extract text from common response formats
+  //         if (response.data.chat.text) {
+  //           aiResponseContent = response.data.chat.text;
+  //         } else if (response.data.chat.content) {
+  //           aiResponseContent = response.data.chat.content;
+  //         } else if (response.data.chat.message) {
+  //           aiResponseContent = response.data.chat.message;
+  //         } else {
+  //           // Safely stringify the object if no recognizable property is found
+  //           try {
+  //             aiResponseContent = JSON.stringify(response.data.chat);
+  //           } catch (e) {
+  //             aiResponseContent = "Received a response I couldn't display properly.";
+  //           }
+  //         }
+  //       } else {
+  //         // Fallback if chat is neither string nor object
+  //         aiResponseContent = "Received a response in an unexpected format.";
+  //       }
+  //     } else {
+  //       // Fallback if response doesn't contain chat property
+  //       aiResponseContent = "I'm sorry, I couldn't process that request.";
+  //     }
       
-//       // Add AI response
-//       const aiResponse = {
-//         id: generateId(),
-//         content: aiResponseContent,
-//         isUser: false,
-//         timestamp: new Date(),
-//       };
+  //     // Add AI response
+  //     const aiResponse = {
+  //       id: generateId(),
+  //       content: aiResponseContent,
+  //       isUser: false,
+  //       timestamp: new Date(),
+  //     };
       
-//       setMessages((prev) => [...prev, aiResponse]);
+  //     setMessages((prev) => [...prev, aiResponse]);
       
-//       // If voice is enabled, read the response
-//       if (voiceEnabled) {
-//         setVoiceState("speaking");
-//         speakText(aiResponse.content);
-//       } else {
-//         setVoiceState("idle");
-//       }
-//     } catch (error) {
-//       console.error("Error sending message:", error);
+  //     // If voice is enabled, read the response
+  //     if (voiceEnabled) {
+  //       setVoiceState("speaking");
+  //       speakText(aiResponse.content);
+  //     } else {
+  //       setVoiceState("idle");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error sending message:", error);
       
-//       // Add error message
-//       const errorMessage = {
-//         id: generateId(),
-//         content: "Sorry, I encountered an error processing your request. Please try again.",
-//         isUser: false,
-//         timestamp: new Date(),
-//       };
+  //     // Add error message
+  //     const errorMessage = {
+  //       id: generateId(),
+  //       content: "Sorry, I encountered an error processing your request. Please try again.",
+  //       isUser: false,
+  //       timestamp: new Date(),
+  //     };
       
-//       setMessages((prev) => [...prev, errorMessage]);
-//       setVoiceState("idle");
+  //     setMessages((prev) => [...prev, errorMessage]);
+  //     setVoiceState("idle");
       
-//       toast({
-//         title: "Error",
-//         description: "Failed to get response from the server.",
-//         variant: "destructive"
-//       });
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
+  //     toast({
+  //       title: "Error",
+  //       description: "Failed to get response from the server.",
+  //       variant: "destructive"
+  //     });
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
 //   const handleKeyDown = (e) => {
 //     if (e.key === "Enter" && !e.shiftKey) {
@@ -495,7 +495,7 @@ import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
 import { useConversation } from "@11labs/react";
-
+import axios from 'axios'
 
 const ELEVEN_LABS_API_KEY = "sk_998f57462046816091acd0bb03d7c82b08f1579296fda36a"; // User will need to provide this
 // sk_998f57462046816091acd0bb03d7c82b08f1579296fda36a
@@ -569,6 +569,58 @@ export function AIAssistantInterface() {
   // Generate a random ID for messages
   const generateId = () => Math.random().toString(36).substring(2, 10);
 
+  // const handleSendMessage = async (content) => {
+  //   const messageContent = content || inputValue;
+  //   if (messageContent.trim() === "") return;
+    
+  //   // Add user message
+  //   const userMessage = {
+  //     id: generateId(),
+  //     content: messageContent,
+  //     isUser: true,
+  //     timestamp: new Date(),
+  //   };
+    
+  //   setMessages((prev) => [...prev, userMessage]);
+  //   setInputValue("");
+  //   setIsLoading(true);
+  //   setVoiceState("thinking");
+    
+  //   // Simulate AI response after a delay
+  //   setTimeout(() => {
+  //     const aiResponses = [
+  //       "That's a great question! Let me explain it for you...",
+  //       "I can help you understand this concept better. Here's what you need to know...",
+  //       "Based on your question, I think the key points to consider are...",
+  //       "Let me break this down for you in simple steps...",
+  //       "That's an interesting topic. Here's what the research shows..."
+  //     ];
+      
+  //     const aiResponse = {
+  //       id: generateId(),
+  //       content: aiResponses[Math.floor(Math.random() * aiResponses.length)],
+  //       isUser: false,
+  //       timestamp: new Date(),
+  //     };
+      
+  //     setMessages((prev) => [...prev, aiResponse]);
+  //     setIsLoading(false);
+      
+  //     // If voice is enabled, read the response
+      // if (voiceEnabled) {
+      //   setVoiceState("speaking");
+        
+      //   if (usingElevenLabs && apiKeySet) {
+      //     speakWithElevenLabs(aiResponse.content);
+      //   } else {
+      //     speakWithBrowserTTS(aiResponse.content);
+      //   }
+      // } else {
+      //   setVoiceState("idle");
+      // }
+  //   }, 1500);
+  // };
+
   const handleSendMessage = async (content) => {
     const messageContent = content || inputValue;
     if (messageContent.trim() === "") return;
@@ -586,27 +638,70 @@ export function AIAssistantInterface() {
     setIsLoading(true);
     setVoiceState("thinking");
     
-    // Simulate AI response after a delay
-    setTimeout(() => {
-      const aiResponses = [
-        "That's a great question! Let me explain it for you...",
-        "I can help you understand this concept better. Here's what you need to know...",
-        "Based on your question, I think the key points to consider are...",
-        "Let me break this down for you in simple steps...",
-        "That's an interesting topic. Here's what the research shows..."
-      ];
+    try {
+      // Filter out the welcome message if it's the first message and prepare history
+      const chatHistory = messages
+        .filter((msg, index) => !(index === 0 && msg.id === "welcome"))
+        .map(msg => ({
+          role: msg.isUser ? "user" : "assistant",
+          content: msg.content
+        }));
       
+      // Make API call to backend
+      const response = await axios.post('http://localhost:3000/ai/chatbot', {
+        prompt: messageContent,
+        history: chatHistory
+      });
+      
+      // Process the API response based on your controller format
+      let aiResponseContent;
+      
+      // Check if response has the chat property as shown in the controller
+      if (response.data && response.data.chat) {
+        if (typeof response.data.chat === 'string') {
+          aiResponseContent = response.data.chat;
+        } else if (typeof response.data.chat === 'object') {
+          // Try to extract text from common response formats
+          if (response.data.chat.text) {
+            aiResponseContent = response.data.chat.text;
+          } else if (response.data.chat.content) {
+            aiResponseContent = response.data.chat.content;
+          } else if (response.data.chat.message) {
+            aiResponseContent = response.data.chat.message;
+          } else {
+            // Safely stringify the object if no recognizable property is found
+            try {
+              aiResponseContent = JSON.stringify(response.data.chat);
+            } catch (e) {
+              aiResponseContent = "Received a response I couldn't display properly.";
+            }
+          }
+        } else {
+          // Fallback if chat is neither string nor object
+          aiResponseContent = "Received a response in an unexpected format.";
+        }
+      } else {
+        // Fallback if response doesn't contain chat property
+        aiResponseContent = "I'm sorry, I couldn't process that request.";
+      }
+      
+      // Add AI response
       const aiResponse = {
         id: generateId(),
-        content: aiResponses[Math.floor(Math.random() * aiResponses.length)],
+        content: aiResponseContent,
         isUser: false,
         timestamp: new Date(),
       };
       
       setMessages((prev) => [...prev, aiResponse]);
-      setIsLoading(false);
       
       // If voice is enabled, read the response
+      // if (voiceEnabled) {
+      //   setVoiceState("speaking");
+      //   speakText(aiResponse.content);
+      // } else {
+      //   setVoiceState("idle");
+      // }
       if (voiceEnabled) {
         setVoiceState("speaking");
         
@@ -618,9 +713,29 @@ export function AIAssistantInterface() {
       } else {
         setVoiceState("idle");
       }
-    }, 1500);
+    } catch (error) {
+      console.error("Error sending message:", error);
+      
+      // Add error message
+      const errorMessage = {
+        id: generateId(),
+        content: "Sorry, I encountered an error processing your request. Please try again.",
+        isUser: false,
+        timestamp: new Date(),
+      };
+      
+      setMessages((prev) => [...prev, errorMessage]);
+      setVoiceState("idle");
+      
+      toast({
+        title: "Error",
+        description: "Failed to get response from the server.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
-
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
