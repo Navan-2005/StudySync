@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import ChatbotComp from "../components/ai/ChatbotComp";
-import { FaQuestionCircle } from 'react-icons/fa'
+import { FaQuestionCircle } from  'react-icons/fa'
 
 function getRoomID() {
   const params = new URLSearchParams(window.location.search);
@@ -40,7 +40,7 @@ export default function App() {
         sharedLinks: [
           {
             name: 'Room Link',
-            url: `${window.location.origin}?roomID=${roomID}`,
+            url: `${window.location.origin}/room?roomID=${roomID}`,
           },
         ],
         scenario: {
