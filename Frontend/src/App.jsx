@@ -8,6 +8,7 @@ import SignUp from "./Pages/SignUp";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import AIAssistant from "./Pages/AIAssistant";
+import Leader from "./pages/Leader";
 import Focuss from "./pages/Focuss";
 import Video from "./pages/Video";
 import Materials from "./pages/Materials";
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/focus" element={<Focuss />} />
           <Route path="/materials" element={<Materials />} />
           <Route path="/room" element={<Video />} />
+          <Route path="/leaderboard" element={<Leader />} />
         
           <Route path='/quiz' element={<Quiz />} />
           <Route path='/quiz/:id' element={<QuizTaker />} />
