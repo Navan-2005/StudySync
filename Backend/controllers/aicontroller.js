@@ -119,6 +119,56 @@ const generateQuiz = async (req, res) => {
 //     }
 // };
 
+// const generateQuiz = async (req, res) => {
+//   const { topic, title, description, difficulty } = req.body;
+//   const userId = req.user?._id; // Assuming you're using auth middleware
+
+//   if (!topic || !userId || !title) {
+//       return res.status(400).json({ error: 'Topic, title, and user ID are required' });
+//   }
+
+//   try {
+//       const quizData = await quiz(topic);
+
+//       if (!quizData || !quizData.questions || !quizData.answers) {
+//           return res.status(500).json({ error: 'Failed to generate a valid quiz' });
+//       }
+
+//       // Prepare question objects
+//       const questions = quizData.questions.map((q, index) => ({
+//           questionText: q.questionText,
+//           options: q.options,
+//           correctAnswer: quizData.answers[index],
+//           timeLimit: q.timeLimit || 30
+//       }));
+
+//       // Create a new quiz document
+//       const newQuiz = new Quiz({
+//           title,
+//           description: description || '',
+//           topic,
+//           questions,
+//           createdBy: userId,
+//           difficulty: difficulty || 'Medium',
+//       });
+
+//       // Save to database
+//       await newQuiz.save();
+
+//       res.status(201).json({
+//           message: 'Quiz generated and saved successfully',
+//           quizId: newQuiz.quizId,
+//           questions: newQuiz.questions.map(q => ({
+//               questionText: q.questionText,
+//               options: q.options,
+//               timeLimit: q.timeLimit
+//           }))
+//       });
+//   } catch (error) {
+//       console.error('Quiz generation error:', error);
+//       res.status(500).json({ error: 'Failed to generate quiz' });
+//   }
+// };
 
 const submitQuiz = async (req, res) => {
   const { quizId, topic, userAnswers, correctAnswers, userId } = req.body;

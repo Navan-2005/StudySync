@@ -9,6 +9,8 @@ export function TopicExplorer() {
   const [isSearching, setIsSearching] = useState(false);
   const [searchResult, setSearchResult] = useState(null);
 
+  
+
   const handleSearch = async () => {
     if (!searchTerm) return;
     
