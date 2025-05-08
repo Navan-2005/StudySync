@@ -14,6 +14,7 @@ import Video from "./pages/Video";
 import Materials from "./pages/Materials";
 import NotFound from "./pages/NotFound";
 import Quiz from './pages/Quiz'
+import Voice from './Components/layout/LectureVideoManager'
 import QuizTaker from './Components/QuizTaker'
 import QuizRoom from './Pages/QuizRoom'
 import VideoRoom from "./pages/VideoRoom";
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/materials" element={<Materials />} />
           <Route path="/room" element={<Video />} />
           <Route path="/leaderboard" element={<Leader />} />
+          <Route path="/voice" element={<Voice/>}/>
         
           <Route path='/quiz' element={<Quiz />} />
           <Route path='/quiz/:id' element={<QuizTaker />} />
