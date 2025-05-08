@@ -55,8 +55,16 @@ const QuizRoom = ({ isLoggedIn }) => {
     try {
       setLoading(true);
       // Validate room code
-      const response = await axios.get(`http://localhost:3000/rooms/${roomCode}`);
+      const response = await axios.post(`http://localhost:3000/rooms/join`,{
+        roomId: roomCode,
+        userId: user._id,
+        username:user.username
+      });
+      console.log('Room Joined : ', response.data);
+      
       if (response.data && response.data.roomId) {
+        console.log('response : ',response.data);
+        
         setRoomId(roomCode);
         setShowTopicSelector(true);
       } else {
