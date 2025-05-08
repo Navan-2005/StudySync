@@ -16,9 +16,10 @@ export async function getYoutubeVideos(topic) {
     if (data.error) {
         return `Error: ${data.error.message}`;
     }
-
-    // Extract video URLs from the response
-    const videoUrls = data.items.map(item => `https://www.youtube.com/watch?v=${item.id.videoId}`);
+    console.log('Response from youtube : ',data.items);
     
-    return videoUrls;
+    // Extract video URLs from the response
+    // const videoUrls = data.items.map(item => `https://www.youtube.com/watch?v=${item.id.videoId}`);
+    
+    return data.items;
 }
