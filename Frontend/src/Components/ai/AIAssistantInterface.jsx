@@ -497,7 +497,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useConversation } from "@11labs/react";
 import axios from 'axios'
 
-const ELEVEN_LABS_API_KEY = "sk_998f57462046816091acd0bb03d7c82b08f1579296fda36a"; // User will need to provide this
+// const ELEVEN_LABS_API_KEY = "sk_998f57462046816091acd0bb03d7c82b08f1579296fda36a"; // User will need to provide this
+const ELEVEN_LABS_API_KEY = ""; // User will need to provide this
 // sk_998f57462046816091acd0bb03d7c82b08f1579296fda36a
 // Voice settings for ElevenLabs
 const VOICE_ID = "PB6BdkFkZLbI39GHdnbQ"; 
