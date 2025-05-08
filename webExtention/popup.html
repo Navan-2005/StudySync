@@ -1,0 +1,535 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Website Blocker</title> -->
+  <!-- <style>
+    /* General styles */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #2d3748;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: auto;
+      width: 100%;
+    }
+
+    .container {
+      width: 300px;
+      background-color: #1a202c;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      animation: slideIn 0.5s ease-out;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #f59e0b;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px;
+      background-color: #4a5568;
+      color: white;
+      border: 1px solid #2d3748;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .input-group input:focus {
+      background-color: #2d3748;
+      outline: none;
+      border-color: #f59e0b;
+    }
+
+    .input-group button {
+      background-color: #3182ce;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .input-group button:hover {
+      background-color: #2b6cb0;
+    }
+
+    h3 {
+      color: #edf2f7;
+      font-size: 0.875rem;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    #blockedList {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .blocked-item {
+      background-color: #4a5568;
+      padding: 8px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .blocked-item:hover {
+      transform: translateX(5px);
+    }
+
+    .remove-btn {
+      background-color: transparent;
+      color: #e53e3e;
+      border: 2px solid #e53e3e;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .remove-btn:hover {
+      background-color: #e53e3e;
+      color: white;
+      transform: scale(1.2);
+    }
+
+    .remove-btn:focus {
+      outline: none;
+      box-shadow: 0 0 5px rgba(229, 62, 62, 0.6);
+    }
+
+    .todo-item {
+  background-color: #4a5568; /* Same as blocked-item */
+  padding: 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  transition: transform 0.3s ease;
+}
+
+.todo-item:hover {
+  transform: translateX(5px);
+}
+
+.todo-item input[type="checkbox"] {
+  margin-right: 8px;
+  accent-color: #22c55e; /* Tailwind green-500 */
+}
+
+
+    /* Animation for sliding in the popup */
+    @keyframes slideIn {
+      0% {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head> -->
+<!-- <body>
+  <div class="container">
+    <h2>Website Blocker</h2>
+    <div class="input-group">
+      <input
+        type="text"
+        id="siteInput"
+        placeholder="example.com"
+        autocomplete="off"
+      />
+      <button id="addBtn">Add</button>
+    </div> -->
+
+    <!-- <h3>Blocked Sites</h3>
+    <ul id="blockedList">
+       Example blocked sites
+      <li class="blocked-item">
+        example.com
+        <button class="remove-btn">✖</button>
+      </li>
+      <li class="blocked-item">
+        another-site.com
+        <button class="remove-btn">✖</button>
+      </li> -->
+    <!-- </ul> --> 
+
+     <!-- <hr style="margin: 1rem 0; border-color: #4B5563;">
+
+     <h3 class="text-sm font-semibold mb-1 text-gray-300">Pomodoro Timer 🍅</h3>
+   <div id="pomodoro">
+     <p id="timerDisplay" class="text-2xl font-bold mb-2 text-center">25:00</p>
+      <div class="flex justify-between gap-2">
+       <button id="startTimer" class="bg-green-600 hover:bg-green-700 px-3 py-1 rounded text-sm">Start</button>
+       <button id="pauseTimer" class="bg-yellow-600 hover:bg-yellow-700 px-3 py-1 rounded text-sm">Pause</button>
+       <button id="resetTimer" class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm">Reset</button>
+    </div>
+  </div> -->
+
+  <!-- <hr style="margin: 1rem 0; border-color: #4B5563;">
+
+ <h3 class="text-sm font-semibold mb-1 text-gray-300">To-Do List 📝</h3>
+ <div id="todo">
+    <input
+    type="text"
+    id="todoInput"
+    class="bg-gray-800 text-white px-3 py-2 rounded w-full mb-2 border border-gray-600"
+    placeholder="Add new task"
+   />
+   <button
+    id="addTodoBtn"
+    class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded text-sm w-full"
+   >
+    Add Task
+   </button>
+  <ul id="todoList" class="mt-3 space-y-1 text-sm text-gray-200">
+    List of tasks will appear here -->
+     <!-- <li class="todo-item">
+    <label style="display: flex; align-items: center; width: 100%;">
+      <input type="checkbox" />
+      <span style="flex: 1;">Test Task</span>
+    </label> -->
+  <!-- </li>
+  </ul>
+ </div>
+
+
+
+
+</div> -->
+
+
+
+  <!-- <script src="popup.js"></script>
+</body>
+</html> -->
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Website Blocker</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #2d3748;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: auto;
+      width: 100%;
+    }
+
+    .container {
+      width: 300px;
+      background-color: #1a202c;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      animation: slideIn 0.5s ease-out;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #f59e0b;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px;
+      background-color: #4a5568;
+      color: white;
+      border: 1px solid #2d3748;
+      border-radius: 8px;
+      font-size: 0.875rem;
+    }
+
+    .input-group input:focus {
+      background-color: #2d3748;
+      outline: none;
+      border-color: #f59e0b;
+    }
+
+    .input-group button {
+      background-color: #3182ce;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+
+    .input-group button:hover {
+      background-color: #2b6cb0;
+    }
+
+    h3 {
+      color: #edf2f7;
+      font-size: 0.875rem;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    #blockedList {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .blocked-item {
+      background-color: #4a5568;
+      padding: 8px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .blocked-item:hover {
+      transform: translateX(5px);
+    }
+
+    .remove-btn {
+      background-color: transparent;
+      color: #e53e3e;
+      border: 2px solid #e53e3e;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .remove-btn:hover {
+      background-color: #e53e3e;
+      color: white;
+      transform: scale(1.2);
+    }
+
+    .remove-btn:focus {
+      outline: none;
+      box-shadow: 0 0 5px rgba(229, 62, 62, 0.6);
+    }
+
+    .todo-item {
+      background-color: #4a5568;
+      padding: 8px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .todo-item:hover {
+      transform: translateX(5px);
+    }
+
+    .todo-item input[type="checkbox"] {
+      margin-right: 8px;
+      accent-color: #22c55e;
+    }
+
+    .section-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #edf2f7;
+    }
+
+    .todo-input {
+      background-color: #2d3748;
+      color: white;
+      padding: 10px;
+      border: 1px solid #4a5568;
+      border-radius: 8px;
+      width: 100%;
+      margin-bottom: 10px;
+      font-size: 0.875rem;
+    }
+
+    .todo-button {
+      background-color: #3182ce;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .todo-button:hover {
+      background-color: #2b6cb0;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 6px;
+      font-size: 0.875rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      color: white;
+    }
+
+    .start-btn {
+      background-color: #16a34a;
+    }
+
+    .start-btn:hover {
+      background-color: #15803d;
+    }
+
+    .pause-btn {
+      background-color: #ca8a04;
+    }
+
+    .pause-btn:hover {
+      background-color: #a16207;
+    }
+
+    .reset-btn {
+      background-color: #dc2626;
+    }
+
+    .reset-btn:hover {
+      background-color: #b91c1c;
+    }
+
+    .timer-display {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    @keyframes slideIn {
+      0% {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    hr {
+      margin: 1rem 0;
+      border: none;
+      border-top: 1px solid #4B5563;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Website Blocker</h2>
+    <div class="input-group">
+      <input type="text" id="siteInput" placeholder="example.com" autocomplete="off" />
+      <button id="addBtn">Add</button>
+    </div>
+
+    <h3>Blocked Sites</h3>
+    <ul id="blockedList"></ul>
+
+    <hr />
+
+    <h3 class="section-title">Pomodoro Timer 🍅</h3>
+    <div id="pomodoro">
+      <p id="timerDisplay" class="timer-display">25:00</p>
+      <div class="btn-group">
+        <button id="startTimer" class="btn start-btn">Start</button>
+        <button id="pauseTimer" class="btn pause-btn">Pause</button>
+        <button id="resetTimer" class="btn reset-btn">Reset</button>
+      </div>
+    </div>
+
+    <hr />
+
+    <h3 class="section-title">To-Do List 📝</h3>
+    <div id="todo">
+      <input type="text" id="todoInput" class="todo-input" placeholder="Add new task" />
+      <button id="addTodoBtn" class="todo-button">Add Task</button>
+      <ul id="todoList">
+        <li class="todo-item">
+          <label style="display: flex; align-items: center; width: 100%;">
+            <input type="checkbox" />
+            <span style="flex: 1;">Test Task</span>
+          </label>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
