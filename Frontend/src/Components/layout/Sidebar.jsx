@@ -10,6 +10,7 @@ const navItems = [
   { name: "AI Assistant", icon: BookUser, path: "/assistant" },
   { name: "Materials", icon: Calendar, path: "/materials" },
   { name: "Test & Leaderboard", icon: TestTube, path: "/quizroom" },
+  { name: "Leaderboard", icon: Smile, path: "/leaderboard" },
 ];
 
 export function Sidebar({ className }) {

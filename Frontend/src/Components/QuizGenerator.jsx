@@ -89,16 +89,18 @@
 // export default QuizGenerator;
 
 import React, { useState } from 'react';
-import { useNavigate,useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 const QuizGenerator = ({ isLoggedIn }) => {
   const [topic, setTopic] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [copySuccess, setCopySuccess] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
   const roomId = location.state && location.state.roomId;
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -136,6 +138,17 @@ const QuizGenerator = ({ isLoggedIn }) => {
     }
   };
 
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(roomId);
+      setCopySuccess('Copied!');
+      setTimeout(() => setCopySuccess(''), 2000);
+    } catch (err) {
+      setCopySuccess('Failed to copy');
+      setTimeout(() => setCopySuccess(''), 2000);
+    }
+  };
+
   return (
     <div className="quiz-generator max-w-2xl mx-auto p-6 bg-brand-card rounded-lg shadow-lg border border-border animate-fade-in">
       <h1 className="text-3xl font-bold text-center bg-gradient-primary text-transparent bg-clip-text mb-6">Generate a Quiz</h1>
@@ -143,6 +156,27 @@ const QuizGenerator = ({ isLoggedIn }) => {
       {!isLoggedIn && (
         <div className="login-notice bg-background border-l-4 border-brand-teal p-4 mb-6 rounded">
           <p className="text-brand-textSecondary text-sm">Note: You can generate and take quizzes without logging in, but your results won't be saved to the leaderboard.</p>
+        </div>
+      )}
+      
+      {roomId && (
+        <div className="room-id-container mb-6 p-3 bg-background rounded-lg border border-input">
+          <label className="block text-brand-text font-medium mb-2">Room ID:</label>
+          <div className="flex items-center">
+            <input 
+              type="text" 
+              value={roomId} 
+              readOnly 
+              className="flex-grow px-3 py-2 bg-accent text-brand-text rounded-l-md border-r-0 border border-input focus:outline-none"
+            />
+            <button 
+              onClick={copyToClipboard} 
+              className="px-4 py-2 bg-gradient-primary hover:opacity-90 text-white rounded-r-md transition duration-300"
+            >
+              {copySuccess || 'Copy'}
+            </button>
+          </div>
+          <p className="mt-2 text-xs text-brand-textSecondary">Share this Room ID with friends to join the same quiz session</p>
         </div>
       )}
       
