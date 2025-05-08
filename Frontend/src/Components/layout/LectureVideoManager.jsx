@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Upload, File, X, Check, Loader2 } from "lucide-react";
+import { Upload, File, X, Check, Loader2, RefreshCw } from "lucide-react";
 
 export default function FlashcardApp() {
   const [file, setFile] = useState(null);
@@ -8,7 +8,8 @@ export default function FlashcardApp() {
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
-  const [showAnswer, setShowAnswer] = useState(false);
+  const [showDefinition, setShowDefinition] = useState(false);
+  const [studyMode, setStudyMode] = useState("learn"); // "learn" or "quiz"
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -34,7 +35,7 @@ export default function FlashcardApp() {
     setError("");
     
     try {
-      const response = await fetch("/flashcard", {
+      const response = await fetch("http://127.0.0.1:8000/flashcard", {
         method: "POST",
         body: formData,
       });
@@ -48,7 +49,7 @@ export default function FlashcardApp() {
       setFlashcards(data.flashcards);
       setSuccessMessage("Flashcards generated successfully!");
       setCurrentCardIndex(0);
-      setShowAnswer(false);
+      setShowDefinition(false);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -59,14 +60,14 @@ export default function FlashcardApp() {
   const nextCard = () => {
     if (currentCardIndex < flashcards.length - 1) {
       setCurrentCardIndex(currentCardIndex + 1);
-      setShowAnswer(false);
+      setShowDefinition(false);
     }
   };
 
   const prevCard = () => {
     if (currentCardIndex > 0) {
       setCurrentCardIndex(currentCardIndex - 1);
-      setShowAnswer(false);
+      setShowDefinition(false);
     }
   };
 
@@ -76,11 +77,23 @@ export default function FlashcardApp() {
     setSuccessMessage("");
     setError("");
     setCurrentCardIndex(0);
-    setShowAnswer(false);
+    setShowDefinition(false);
   };
 
-  const toggleAnswer = () => {
-    setShowAnswer(!showAnswer);
+  const toggleDefinition = () => {
+    setShowDefinition(!showDefinition);
+  };
+
+  const shuffleCards = () => {
+    const shuffled = [...flashcards].sort(() => Math.random() - 0.5);
+    setFlashcards(shuffled);
+    setCurrentCardIndex(0);
+    setShowDefinition(false);
+  };
+
+  const toggleStudyMode = () => {
+    setStudyMode(studyMode === "learn" ? "quiz" : "learn");
+    setShowDefinition(false);
   };
 
   return (
@@ -173,38 +186,73 @@ export default function FlashcardApp() {
               <h2 className="text-xl font-bold text-brand-text">
                 Your Flashcards ({currentCardIndex + 1}/{flashcards.length})
               </h2>
-              <button
-                onClick={resetApp}
-                className="py-2 px-4 rounded-lg text-brand-text bg-white border border-gray-300 hover:bg-gray-100 transition-colors"
-              >
-                Create New Flashcards
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={shuffleCards}
+                  className="py-2 px-4 rounded-lg text-brand-text bg-white border border-gray-300 hover:bg-gray-100 transition-colors flex items-center gap-1"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                  Shuffle
+                </button>
+                <button
+                  onClick={toggleStudyMode}
+                  className="py-2 px-4 rounded-lg text-white bg-brand-teal hover:bg-brand-teal/90 transition-colors"
+                >
+                  {studyMode === "learn" ? "Switch to Quiz Mode" : "Switch to Learn Mode"}
+                </button>
+                <button
+                  onClick={resetApp}
+                  className="py-2 px-4 rounded-lg text-brand-text bg-white border border-gray-300 hover:bg-gray-100 transition-colors"
+                >
+                  Create New Flashcards
+                </button>
+              </div>
             </div>
 
             {/* Flashcard display */}
             <div className="mb-6">
               <div 
                 className="bg-white rounded-lg shadow-lg p-8 min-h-64 cursor-pointer"
-                onClick={toggleAnswer}
+                onClick={toggleDefinition}
               >
                 <div className="flex justify-between items-center mb-4">
-                  <span className="text-sm text-brand-textSecondary">Click card to reveal answer</span>
+                  <span className="text-sm text-brand-textSecondary">
+                    {studyMode === "learn" ? "Study Mode" : "Quiz Mode"} - Click card to reveal
+                  </span>
                   <span className="px-3 py-1 bg-brand-purple/10 text-brand-purple rounded-full text-sm">
                     Card {currentCardIndex + 1}
                   </span>
                 </div>
 
-                <div className="min-h-32">
-                  <h3 className="text-lg font-bold text-brand-text mb-4">
-                    {flashcards[currentCardIndex]?.question || "Question"}
-                  </h3>
-                  
-                  {showAnswer && (
-                    <div className="mt-6 pt-6 border-t border-gray-200">
-                      <p className="text-brand-text">
-                        {flashcards[currentCardIndex]?.answer || "Answer"}
-                      </p>
-                    </div>
+                <div className="min-h-32 flex flex-col items-center justify-center">
+                  {studyMode === "learn" ? (
+                    <>
+                      <h3 className="text-xl font-bold text-brand-text mb-4 text-center">
+                        {flashcards[currentCardIndex]?.topic || "Topic"}
+                      </h3>
+                      
+                      {showDefinition && (
+                        <div className="mt-6 pt-6 border-t border-gray-200 w-full">
+                          <p className="text-brand-text text-center">
+                            {flashcards[currentCardIndex]?.definition || "Definition"}
+                          </p>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <h3 className="text-xl font-bold text-brand-text mb-4 text-center">
+                        {flashcards[currentCardIndex]?.definition || "Definition"}
+                      </h3>
+                      
+                      {showDefinition && (
+                        <div className="mt-6 pt-6 border-t border-gray-200 w-full">
+                          <p className="text-brand-text text-center font-bold">
+                            {flashcards[currentCardIndex]?.topic || "Topic"}
+                          </p>
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
               </div>
@@ -219,6 +267,12 @@ export default function FlashcardApp() {
                   ${currentCardIndex === 0 ? "bg-gray-300 cursor-not-allowed text-gray-500" : "bg-brand-teal text-white hover:bg-brand-teal/90"}`}
               >
                 Previous Card
+              </button>
+              <button
+                onClick={toggleDefinition}
+                className="flex-1 py-3 px-6 rounded-lg font-medium bg-brand-purple/20 text-brand-purple hover:bg-brand-purple/30"
+              >
+                {showDefinition ? "Hide Answer" : "Show Answer"}
               </button>
               <button
                 onClick={nextCard}
