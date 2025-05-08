@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import ChatbotComp from "../components/ai/ChatbotComp";
+import VoiceRecorderComponent from "../components/VoiceRecorderComponent";
 import MusicPlayer from '../pages/MusicPlayer';
 import { FaQuestionCircle } from 'react-icons/fa';
 
@@ -292,6 +293,9 @@ return (
       </button>
       {showChatbot && <ChatbotComp />}
     </div>
+    
+    {/* Add Voice Recorder Component */}
+    {joined && <VoiceRecorderComponent />}
   </>
 );
 }

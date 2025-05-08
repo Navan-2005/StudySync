@@ -11,6 +11,8 @@ const navItems = [
   { name: "Materials", icon: Calendar, path: "/materials" },
   { name: "Test & Leaderboard", icon: TestTube, path: "/quizroom" },
   { name: "Leaderboard", icon: Smile, path: "/leaderboard" },
+  { name: "Voice Analyzer", icon: Smile, path: "/voice" },
+
 ];
 
 export function Sidebar({ className }) {
