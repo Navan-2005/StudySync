@@ -58,6 +58,8 @@ const createUser = async (req, res) => {
     const {topic}=req.body;
     try {
       const videos=await getYoutubeVideos(topic);
+      console.log('Response from youtube',videos);
+      
       res.status(200).json(videos);
     } catch (error) {
       console.log(error);

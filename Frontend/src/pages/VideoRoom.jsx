@@ -124,7 +124,7 @@ export default function App() {
       />
       <div className="fixed bottom-24 right-6 flex flex-col gap-4 items-end z-50">
         <button
-          onClick={() => window.location.href = '/quiz'}
+          onClick={() => window.location.href = '/quizroom'}
           className="flex items-center gap-2 px-4 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-full shadow-lg transition-all duration-300 transform hover:scale-105"
         >
           <FaQuestionCircle className="text-lg" />
