@@ -18,19 +18,19 @@ export function HeroSection() {
           <Button 
             size="lg"
             className="bg-gradient-primary hover:opacity-90"
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate('/room')}
           >
             <Users className="mr-2" size={18} />
-            Create Study Room
+            Study Now
           </Button>
-          <Button 
+          {/* <Button 
             size="lg"
             variant="outline"
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate('/room')}
           >
             Join Room
             <ArrowRight className="ml-2" size={18} />
-          </Button>
+          </Button> */}
         </div>
       </div>
       
