@@ -2,59 +2,69 @@ import { useState } from "react";
 import { Search, Mic, Bookmark, Play } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
 
 export function TopicExplorer() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [searchResult, setSearchResult] = useState(null);
 
-  const handleSearch = () => {
+  const handleSearch = async() => {
     if (!searchTerm) return;
     
     setIsSearching(true);
-    
+    try {
+       const responce=await axios.post('http://localhost:3000/users/video',{topic:searchTerm});
+       console.log(responce.data);      
+        
     // Simulate API call delay
     setTimeout(() => {
       // Mock data
+      // setSearchResult({
+      //   summary: "Photosynthesis is the process by which plants and some other organisms use sunlight to synthesize nutrients from carbon dioxide and water. It's a vital process that produces oxygen as a byproduct, which most living organisms need for survival.",
+      //   keyPoints: [
+      //     "Occurs primarily in the chloroplasts of plant cells",
+      //     "Requires sunlight, water, and carbon dioxide",
+      //     "Produces glucose and oxygen",
+      //     "Has light-dependent and light-independent reactions",
+      //     "Essential for maintaining atmospheric oxygen levels"
+      //   ],
+      //   videos: [
+      //     {
+      //       id: "v1",
+      //       title: "Photosynthesis | Educational Video for Kids",
+      //       channel: "Science Explained",
+      //       duration: "8:24",
+      //       thumbnail: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=225&fit=crop",
+      //       saved: false
+      //     },
+      //     {
+      //       id: "v2",
+      //       title: "Photosynthesis: Light Reaction, Calvin Cycle, and Electron Transport",
+      //       channel: "Professor Bio",
+      //       duration: "12:16",
+      //       thumbnail: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=225&fit=crop",
+      //       saved: false
+      //     },
+      //     {
+      //       id: "v3",
+      //       title: "Understanding Photosynthesis in 5 Minutes",
+      //       channel: "Quick Science",
+      //       duration: "5:05",
+      //       thumbnail: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=225&fit=crop",
+      //       saved: false
+      //     }
+      //   ]
+      // });
       setSearchResult({
-        summary: "Photosynthesis is the process by which plants and some other organisms use sunlight to synthesize nutrients from carbon dioxide and water. It's a vital process that produces oxygen as a byproduct, which most living organisms need for survival.",
-        keyPoints: [
-          "Occurs primarily in the chloroplasts of plant cells",
-          "Requires sunlight, water, and carbon dioxide",
-          "Produces glucose and oxygen",
-          "Has light-dependent and light-independent reactions",
-          "Essential for maintaining atmospheric oxygen levels"
-        ],
-        videos: [
-          {
-            id: "v1",
-            title: "Photosynthesis | Educational Video for Kids",
-            channel: "Science Explained",
-            duration: "8:24",
-            thumbnail: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=225&fit=crop",
-            saved: false
-          },
-          {
-            id: "v2",
-            title: "Photosynthesis: Light Reaction, Calvin Cycle, and Electron Transport",
-            channel: "Professor Bio",
-            duration: "12:16",
-            thumbnail: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=225&fit=crop",
-            saved: false
-          },
-          {
-            id: "v3",
-            title: "Understanding Photosynthesis in 5 Minutes",
-            channel: "Quick Science",
-            duration: "5:05",
-            thumbnail: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=225&fit=crop",
-            saved: false
-          }
-        ]
-      });
+        videos: responce.data
+      })
       
       setIsSearching(false);
     }, 1500);
+  } catch (error) {
+    console.log('Error: ',error);      
+  }
   };
 
   const toggleSavedVideo = (id) => {
