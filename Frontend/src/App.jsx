@@ -17,8 +17,10 @@ import Quiz from './pages/Quiz'
 import Voice from './Components/layout/LectureVideoManager'
 import QuizTaker from './Components/QuizTaker'
 import QuizRoom from './Pages/QuizRoom'
+
 import VideoRoom from "./pages/VideoRoom";
 import { Focus } from "lucide-react";
+import FlashcardApp from "./Components/layout/LectureVideoManager";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +46,7 @@ const App = () => (
           <Route path='/quiz/:id' element={<QuizTaker />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="/quizroom" element={<QuizRoom />} />
+          <Route path='/flashcard' element={<FlashcardApp/>}/>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
