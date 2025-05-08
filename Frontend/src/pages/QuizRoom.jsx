@@ -62,10 +62,17 @@ const QuizRoom = ({ isLoggedIn }) => {
       });
       console.log('Room Joined : ', response.data);
       
-      if (response.data && response.data.roomId) {
+      if (response.data && response.data) {
         console.log('response : ',response.data);
         
         setRoomId(roomCode);
+        console.log('response in join room : ',response.data);
+        
+        console.log('QuizId in room :', response.data.quizId);
+        
+        console.log('RoomId in join room : ', response.data.roomId);
+        
+        navigate(`/quiz/${response.data.quizId}`,{state:{quizId:response.data.quizId,roomId:response.data.roomId}});
         setShowTopicSelector(true);
       } else {
         setError('Invalid room code. Please try again.');

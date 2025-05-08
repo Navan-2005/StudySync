@@ -12,7 +12,7 @@ const quizSchema = new mongoose.Schema({
     type: String, 
     required: true, 
     unique: true,
-    default: () => Math.random().toString(36).substring(2, 10).toUpperCase()
+    // default: () => Math.random().toString(36).substring(2, 10).toUpperCase()
   },
   title: { type: String, required: true },
   description: { type: String },

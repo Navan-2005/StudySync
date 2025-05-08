@@ -4,6 +4,7 @@ const roomSchema = new mongoose.Schema({
   roomId: { type: String, required: true, unique: true },
   // quizId: { type: String, required: true },
   host: { type: String, required: true }, // User ID of host
+  quizId: { type: String, required: true },
   participants: [{
     userId: String,
     username: String,

@@ -13,6 +13,7 @@ exports.createRoom = async (req, res) => {
     const room = new Room({
       roomId,
       host: userId,
+      quizId:'12345',
       participants: [{
         userId,
         username,
@@ -62,6 +63,7 @@ exports.joinRoom = async (req, res) => {
     res.status(200).json({
       success: true,
       quizId: room.quizId,
+      roomId: room.roomId,
       participants: room.participants
     });
     

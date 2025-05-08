@@ -90,9 +90,11 @@
 
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 
 const QuizGenerator = ({ isLoggedIn }) => {
+  const {user}=useSelector((state)=>state.user);
   const [topic, setTopic] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -113,17 +115,19 @@ const QuizGenerator = ({ isLoggedIn }) => {
       setLoading(true);
       setError('');
       
-      const response = await axios.post('http://localhost:3000/ai/generate-quiz', { topic });
+      const response = await axios.post('http://localhost:3000/ai/generate-quiz', { topic,userId:user._id ,roomId:roomId});
       console.log('Quiz Generated : ',response.data);
       
-      if (response.data && response.data.quizId) {
+      if (response.data && response.data.newquizId
+      ) {
         // Pass quizData as state to QuizTaker
         console.log('RoomId in quiz generator : ',roomId);
         
-        navigate(`/quiz/${response.data.quizId}`, { 
+        navigate(`/quiz/${response.data.newquizId
+        }`, { 
           state: {
             ...response.data,
-            quizId: response.data.quizId,
+            quizId: response.data.newquizId, 
             roomId: roomId
           }
         });}

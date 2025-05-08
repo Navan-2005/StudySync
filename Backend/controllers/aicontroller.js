@@ -3,48 +3,50 @@ const User = require('../models/User'); // Assuming you have a User model
 const chatbot = require('../services/chatbot');
 const QuizModel=require('../models/QuizModel')
 const mentalchatbot=require('../services/mentalchatbot');
-
-const generateQuiz = async (req, res) => {
-    const { topic } = req.body;
+const RoomModel=require('../models/Room');
+// const generateQuiz = async (req, res) => {
+//     const { topic } = req.body;
     
-    if (!topic) {
-        return res.status(400).json({ error: 'Topic is required' });
-    }
+//     if (!topic) {
+//         return res.status(400).json({ error: 'Topic is required' });
+//     }
     
-    try {
-        const quizData = await quiz(topic);
-        console.log('Quiz data : ',quizData.questions);
-        console.log('Quiz answers : ',quizData.answers);
+//     try {
+//         const quizData = await quiz(topic);
+//         console.log('Response from quiz : ',quizData);
         
-        if (!quizData || !quizData.questions || !quizData.answers) {
-            return res.status(500).json({ error: 'Failed to generate a valid quiz' });
-        }
+//         console.log('Quiz data : ',quizData.questions);
+//         console.log('Quiz answers : ',quizData.answers);
         
-        // Generate a unique quiz ID
-        const quizId = Date.now().toString();
+//         if (!quizData || !quizData.questions || !quizData.answers) {
+//             return res.status(500).json({ error: 'Failed to generate a valid quiz' });
+//         }
         
-        // Store quiz in session or database
-        req.session = req.session || {};
-        req.session.quizzes = req.session.quizzes || {};
-        req.session.quizzes[quizId] = {
-            topic,
-            questions: quizData.questions,
-            answers: quizData.answers,
-            createdAt: new Date()
-        };
+//         // Generate a unique quiz ID
+//         const quizId = Date.now().toString();
         
-        // Return only questions to the client (not answers)
-        res.status(200).json({
-            quizId,
-            topic,
-            questions: quizData.questions,
-            answers:quizData.answers
-        });
-    } catch (error) {
-        console.error('Quiz generation error:', error);
-        res.status(500).json({ error: 'Failed to generate quiz' });
-    }
-};
+//         // Store quiz in session or database
+//         req.session = req.session || {};
+//         req.session.quizzes = req.session.quizzes || {};
+//         req.session.quizzes[quizId] = {
+//             topic,
+//             questions: quizData.questions,
+//             answers: quizData.answers,
+//             createdAt: new Date()
+//         };
+//         const quizmodel=await new QuizModel();
+//         // Return only questions to the client (not answers)
+//         res.status(200).json({
+//             quizId,
+//             topic,
+//             questions: quizData.questions,
+//             answers:quizData.answers
+//         });
+//     } catch (error) {
+//         console.error('Quiz generation error:', error);
+//         res.status(500).json({ error: 'Failed to generate quiz' });
+//     }
+// };
 
 // const submitQuiz = async (req, res) => {
 //     const { quizId, userAnswers, userId } = req.body;
@@ -169,6 +171,127 @@ const generateQuiz = async (req, res) => {
 //       res.status(500).json({ error: 'Failed to generate quiz' });
 //   }
 // };
+
+function getAnswerIndex(letter) {
+  return letter.charCodeAt(0) - 65;
+}
+
+const generateQuiz = async (req, res) => {
+  const { topic,userId,roomId } = req.body; // Assuming you have auth middleware
+
+  if (!topic  || !userId) {
+      return res.status(400).json({ error: 'Topic, title, and user ID are required' });
+  }
+
+  try {
+      const quizData = await quiz(topic); // This should return { questions, answers }
+
+      if (
+          !quizData ||
+          !Array.isArray(quizData.questions) ||
+          !Array.isArray(quizData.answers) ||
+          quizData.questions.length !== quizData.answers.length
+      ) {
+          return res.status(500).json({ error: 'Invalid quiz data format' });
+      }
+
+      // Merge correct answers into questions
+      const formattedQuestions = quizData.questions.map((q, index) => {
+          const answerLetter = quizData.answers[index];
+          const answerIndex = getAnswerIndex(answerLetter);
+
+          if (!Array.isArray(q.options) || answerIndex >= q.options.length) {
+              throw new Error(`Invalid answer index for question ${index + 1}`);
+          }
+
+          return {
+              questionText: q.question,
+              options: q.options,
+              correctAnswer: q.options[answerIndex],
+              timeLimit: 30
+          };
+      });
+
+      const newquizId =roomId+topic;
+
+      // Create new quiz document
+      const newQuiz = new QuizModel({
+        quizId:newquizId,
+          title:topic,
+          description:topic,
+          topic,
+          questions: formattedQuestions,
+          createdBy: userId,
+          difficulty:  'Medium'
+      });
+      console.log('newQuiz : ',newQuiz);
+      
+      await newQuiz.save();
+
+      // Optional: store in session
+      // req.session = req.session || {};
+      // req.session.quizzes = req.session.quizzes || {};
+      // req.session.quizzes[quizId] = {
+      //     topic,
+      //     questions: formattedQuestions,
+      //     answers: quizData.answers,
+      //     createdAt: new Date()
+      // };
+      
+      const room = await RoomModel.findOneAndUpdate(
+        { roomId: roomId },
+        { quizId: newquizId },  // replace with the new quizId
+        { new: true }           // returns the updated document
+      );
+      console.log('New Room : ',room)
+
+      // Return only the questions (no answers) to client
+      res.status(200).json({
+        newquizId,
+          topic,
+          questions: formattedQuestions.map(q => ({
+              questionText: q.questionText,
+              options: q.options,
+              timeLimit: q.timeLimit
+          }))
+      });
+  } catch (error) {
+      console.error('Quiz generation error:', error);
+      res.status(500).json({ error: 'Failed to generate quiz' });
+  }
+};
+
+const getQuizzes = async (req, res) => {
+  const { quizId } = req.body;
+  const model=await QuizModel.findOne({quizId});
+  console.log('QuizId : ',quizId);
+  
+  console.log(model.topic);
+  const topic=model.topic;
+  if(!topic){
+    return res.status(404).json({ error: 'Topic not found' });
+  }
+  try {
+    const quiz = await QuizModel.findOne({ quizId }); // use quizId, not _id
+
+    if (!quiz) {
+      return res.status(404).json({ error: 'Quiz not found' });
+    }
+
+    const questions = quiz.questions.map(q => ({
+      questionText: q.questionText,
+      options: q.options
+    }));
+
+    const correctAnswers = quiz.questions.map(q => q.correctAnswer);
+
+    res.status(200).json({ questions, correctAnswers,topic });
+  } catch (error) {
+    console.error('Error fetching quiz:', error);
+    res.status(400).json({ error: error.message });
+  }
+};
+
 
 const submitQuiz = async (req, res) => {
   const { quizId, topic, userAnswers, correctAnswers, userId } = req.body;
@@ -312,5 +435,6 @@ module.exports = {
     submitQuiz,
     chatBot,
     getLeaderboard,
-    mentalhelper
+    mentalhelper,
+    getQuizzes
 };
