@@ -17,6 +17,7 @@ import Quiz from './pages/Quiz'
 import Voice from './Components/layout/LectureVideoManager'
 import QuizTaker from './Components/QuizTaker'
 import QuizRoom from './Pages/QuizRoom'
+import Mcq from './pages/Mcq'
 
 import VideoRoom from "./pages/VideoRoom";
 import { Focus } from "lucide-react";
@@ -41,6 +42,8 @@ const App = () => (
           <Route path="/room" element={<Video />} />
           <Route path="/leaderboard" element={<Leader />} />
           <Route path="/voice" element={<Voice/>}/>
+          '<Route path="/mcq" element={<Mcq/>}/>
+          
         
           <Route path='/quiz' element={<Quiz />} />
           <Route path='/quiz/:id' element={<QuizTaker />} />
