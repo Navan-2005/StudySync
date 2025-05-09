@@ -3,12 +3,14 @@ import { Search, Mic, Bookmark, Play } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
+import { set } from "zod";
+import ScholarDisplay from "../ScholarDisplay";
 
 export function TopicExplorer() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [searchResult, setSearchResult] = useState(null);
-
+  const [scholar,setScholar] = useState('');
   
 
   const handleSearch = async () => {
@@ -19,6 +21,8 @@ export function TopicExplorer() {
       const response = await axios.post('http://localhost:3000/users/video', { topic: searchTerm });
       console.log("API Response:", response.data);
       
+      const response1=await axios.post('http://localhost:3000/users/schollers', { topic: searchTerm });
+      setScholar(response1.data);
       // Transform YouTube API response to match the expected format in our UI
       const transformedVideos = response.data.map(item => ({
         id: item.id.videoId,
@@ -203,6 +207,9 @@ export function TopicExplorer() {
                 <Bookmark size={14} className="mr-1" /> Bookmark Topic
               </Button>
             </div>
+            {scholar && (
+              <ScholarDisplay data={scholar}/>
+            )}
           </div>
         )}
       </CardContent>

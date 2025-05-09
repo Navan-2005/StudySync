@@ -1,7 +1,7 @@
-const { config } = require("dotenv");
+// require("dotenv").config();
+import { config } from 'dotenv';
 config();
-
- async function getYoutubeVideos(topic) {
+ export async function getYoutubeVideos(topic) {
     const response = await fetch(
         `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(topic)}&maxResults=3&type=video&key=${process.env.YOUTUBE_API_KEY}`
     );
