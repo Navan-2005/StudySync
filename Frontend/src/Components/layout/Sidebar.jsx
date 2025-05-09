@@ -9,10 +9,10 @@ const navItems = [
   { name: "Focus Mode", icon: Focus, path: "/focus" },
   { name: "AI Assistant", icon: BookUser, path: "/assistant" },
   { name: "Materials", icon: Calendar, path: "/materials" },
-  { name: "Test & Leaderboard", icon: TestTube, path: "/quizroom" },
+  { name: "Quiz Time", icon: TestTube, path: "/quizroom" },
   { name: "Leaderboard", icon: Smile, path: "/leaderboard" },
-  { name: "Voice Analyzer", icon: Smile, path: "/voice" },
-  { name: "MCQs", icon: Smile, path: "/mcq" },
+  { name: "Flash Cards", icon: Smile, path: "/voice" },
+  { name: "MCQ", icon: Smile, path: "/mcq" },
 
 ];
 

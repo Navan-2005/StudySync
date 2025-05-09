@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import ChatbotComp from "../components/ai/ChatbotComp";
-import VoiceRecorderComponent from "../components/VoiceRecorderComponent";
+import VoiceRecorderComponent from "../Components/VoiceRecorderComponent";
 import MusicPlayer from '../pages/MusicPlayer';
 import { FaQuestionCircle } from 'react-icons/fa';
 import SessionSummaryComponent from '../components/ai/SessionSummaryComponent';
@@ -296,6 +296,11 @@ export default function App() {
 
   return (
     <>
+       {joined && (
+        <VoiceRecorderComponent 
+          onTranscriptionComplete={handleReceiveTranscriptionData}
+        />
+      )}
       <MusicPlayer />
       <div 
         ref={containerRef} 
@@ -311,13 +316,6 @@ export default function App() {
         </button>
         {showChatbot && <ChatbotComp />}
       </div>
-      
-      {/* Updated Voice Recorder Component with data handling */}
-      {joined && (
-        <VoiceRecorderComponent 
-          onTranscriptionComplete={handleReceiveTranscriptionData}
-        />
-      )}
     </>
   );
 }

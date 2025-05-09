@@ -41,13 +41,13 @@ const Index = () => {
           
           <nav className="hidden md:flex gap-8">
             <a href="#features" className="text-brand-textSecondary hover:text-brand-text transition-colors">Features</a>
-            <a href="#how-it-works" className="text-brand-textSecondary hover:text-brand-text transition-colors">How It Works</a>
-            <a href="#testimonials" className="text-brand-textSecondary hover:text-brand-text transition-colors">Testimonials</a>
+            <a href="#features" className="text-brand-textSecondary hover:text-brand-text transition-colors">How It Works</a>
+            <a href="#features" className="text-brand-textSecondary hover:text-brand-text transition-colors">Testimonials</a>
           </nav>
           
           <div className="flex gap-4">
-            <Button variant="ghost">Log In</Button>
-            <Button className="bg-gradient-primary hover:opacity-90">Sign Up</Button>
+            {/* <Button variant="ghost">Log In</Button> */}
+            {/* <Button className="bg-gradient-primary hover:opacity-90">Sign Up</Button> */}
           </div>
         </div>
       </header>

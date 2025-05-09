@@ -7,7 +7,7 @@ import Login from "./pages/Login";
 import SignUp from "./Pages/SignUp";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
-import AIAssistant from "./Pages/AIAssistant";
+import AIAssistant from "./pages/AIAssistant";
 import Leader from "./pages/Leader";
 import Focuss from "./pages/Focuss";
 import Video from "./pages/Video";
@@ -16,8 +16,8 @@ import NotFound from "./pages/NotFound";
 import Quiz from './pages/Quiz'
 import Voice from './Components/layout/LectureVideoManager'
 import QuizTaker from './Components/QuizTaker'
-import QuizRoom from './Pages/QuizRoom'
-import Mcq from './pages/Mcq'
+import QuizRoom from './pages/Quiz'
+import Mcq from './pages/Mcqs'
 
 import VideoRoom from "./pages/VideoRoom";
 import { Focus } from "lucide-react";
