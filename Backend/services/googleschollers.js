@@ -1,7 +1,7 @@
 // controllers/scholarController.js
-import axios from 'axios';
+const axios=require('axios');
 
-export async function googlesearch(topic) {
+ async function googlesearch(topic) {
   try {
     const API_KEY = process.env.GOOGLE_KEY;
     const url = `https://serpapi.com/search.json?engine=google_scholar&q=${encodeURIComponent(topic)}&api_key=${API_KEY}`;
