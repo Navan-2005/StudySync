@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { useSelector,useDispatch } from "react-redux";
 import { setUser } from "../Redux/features/userSlice";
+import {useNavigate} from 'react-router-dom';
 
 const loginSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
@@ -23,6 +24,7 @@ export default function Login() {
    
   const {user}=useSelector((state)=>state.user);
   const dispatch=useDispatch();
+  const navigate=useNavigate();
   
   const [showPassword, setShowPassword] = useState(false);
   
@@ -41,7 +43,7 @@ export default function Login() {
       localStorage.setItem('token',response.data.token);
       dispatch(setUser(response.data.user));
       console.log(response.data.user);
-      
+      navigate('/');
     }
     toast.success("Login successful (demo mode)", {
       description: `Welcome back, ${data.username}! This is just a demo, no actual authentication yet.`,

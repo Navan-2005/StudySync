@@ -229,6 +229,7 @@ def summarize_audio():
 
         prompt = f"""
         Summarize this coveasational content in detail making them into a summary of the whole session of the audio file.
+        Keep it as crisp as possible.
         Text:
         {raw_text[:12000]}
         """
