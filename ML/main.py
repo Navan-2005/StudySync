@@ -73,7 +73,7 @@ def extract_text_from_pdf(pdf_file):
     pdf_reader = PdfReader(pdf_file)
     return "".join(page.extract_text() for page in pdf_reader.pages)
 
-def generate_flashcards(text, count=5, difficulty="medium"):
+def generate_flashcards(text, count=7, difficulty="medium"):
     prompt = f"""
     Generate {count} {difficulty}-level flashcards from the following educational content.
 
@@ -209,6 +209,36 @@ def generate_flashcards_endpoint():
 #         return {"dominant_emotion": dominant_emotion}
 #     except Exception as e:
 #         return {"error": str(e)}
+
+
+@app.route('/audio', methods=['POST'])
+def summarize_audio():
+    try:
+        data = request.get_json()
+
+        if not data or 'text' not in data:
+            return jsonify({"error": "No text provided"}), 400
+
+        raw_text = data['text'].strip()
+        if not raw_text:
+            return jsonify({"error": "Text is empty"}), 400
+
+        prompt = f"""
+        Summarize this coveasational content in detail making them into a summary of the whole session of the audio file.
+        Text:
+        {raw_text[:12000]}
+        """
+
+        model = genai.GenerativeModel("gemini-1.5-flash")
+        response = model.generate_content(prompt)
+
+        summary = response.text
+        return jsonify({"summary": summary})
+
+    except Exception as e:
+        print(f"Error in summarize-text: {e}")
+        return jsonify({"error": str(e)}), 500
+
 
 
 # Add a health check endpoint

@@ -23,14 +23,14 @@ export function HeroSection() {
             <Users className="mr-2" size={18} />
             Study Now
           </Button>
-          {/* <Button 
-            size="lg"
-            variant="outline"
-            onClick={() => navigate('/room')}
-          >
-            Join Room
-            <ArrowRight className="ml-2" size={18} />
-          </Button> */}
+          <Button
+  size="lg"
+  variant="outline"
+  onClick={() => window.open('http://127.0.0.1:5500/ML/live/index.html', '_blank')}
+>
+  Study with AI
+  <ArrowRight className="ml-2" size={18} />
+</Button>
         </div>
       </div>
       
