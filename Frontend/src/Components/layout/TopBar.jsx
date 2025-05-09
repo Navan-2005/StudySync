@@ -23,23 +23,23 @@ export function TopBar({ roomName = "Study Room #1", className }) {
         </div>
 
         <div className="flex gap-2">
-          <Button
+          {/* <Button
             variant="outline"
             size="icon"
             onClick={() => setMicOn(!micOn)}
             className={micOn ? "" : "bg-red-50 text-red-500 border-red-200"}
           >
             {micOn ? <Mic size={18} /> : <MicOff size={18} />}
-          </Button>
+          </Button> */}
 
-          <Button
+          {/* <Button
             variant="outline"
             size="icon"
             onClick={() => setVideoOn(!videoOn)}
             className={videoOn ? "" : "bg-red-50 text-red-500 border-red-200"}
           >
             {videoOn ? <Video size={18} /> : <VideoOff size={18} />}
-          </Button>
+          </Button> */}
 
           <Button variant="outline" size="icon">
             <Bell size={18} />

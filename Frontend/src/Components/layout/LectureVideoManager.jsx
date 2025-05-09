@@ -585,7 +585,7 @@ export default function FlashcardApp() {
   return (
     <div className="min-h-screen bg-brand-background flex flex-col">
       {/* Header */}
-      <header className="bg-white shadow-sm">
+      {/* <header className="bg-white shadow-sm">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-brand-purple">Flashcard Generator</h1>
           
@@ -599,10 +599,10 @@ export default function FlashcardApp() {
                 <LogOut className="h-4 w-4" />
                 Logout
               </button>
-            </div>
+            </div> 
           ) : null}
-        </div>
-      </header>
+        </div> */}
+      {/* </header> */}
 
       {/* Main content */}
       <main className="flex-grow container mx-auto px-4 py-8">

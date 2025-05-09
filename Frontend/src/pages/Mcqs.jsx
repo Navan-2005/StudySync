@@ -1,12 +1,12 @@
+import  Mcq  from "../pages/Mcq";
 import { Dashboard } from "@/components/Dashboard";
-import  QuizRoom  from "../pages/QuizRoom";
 
-const Quiz = () => {
+const Mcqs = () => {
   return (
     <Dashboard>
-      <QuizRoom />
+      <Mcq />
     </Dashboard>
   );
 };
 
-export default Quiz;
+export default Mcqs;
