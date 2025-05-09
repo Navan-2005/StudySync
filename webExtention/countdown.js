@@ -6,7 +6,7 @@ const interval = setInterval(() => {
 
   if (countdownTime <= 0) {
     clearInterval(interval); // Stop the interval
-    const redirectUrl = "https://www.focusmode.com"; // Specify your redirect URL here
+    const redirectUrl = "https://www.focusmode.com"; // Specify your redirect URL here //http://localhost:8080/
     window.location.href = redirectUrl; // Redirect the user
   } else {
     countdownTime--; // Decrease countdown time
