@@ -1,53 +1,62 @@
 import { useState, useEffect } from 'react';
 import { FileText, Copy, RefreshCw } from 'lucide-react';
+import { set } from 'mongoose';
 
-export default function SessionSummaryComponent({ transcriptionData, onClose }) {
+export default function SessionSummaryComponent({  onClose }) {
   const [summary, setSummary] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
+  const [transcriptionData, setTranscriptionData] = useState('');
 
+  // useEffect(() => {
+  //   if (transcriptionData && transcriptionData.trim()) {
+  //     generateSummary(transcriptionData);
+  //   }
+  // }, [transcriptionData]);
   useEffect(() => {
-    if (transcriptionData && transcriptionData.trim()) {
-      generateSummary(transcriptionData);
+    const transcript = localStorage.getItem('transcript');
+    if (transcript) {
+      setTranscriptionData(transcript);
     }
-  }, [transcriptionData]);
+    setSummary(transcript);
+  }, []);
 
-  const generateSummary = async (text) => {
-    setLoading(true);
-    setError(null);
+  // const generateSummary = async (text) => {
+  //   setLoading(true);
+  //   setError(null);
     
-    try {
-      const response = await fetch('/audio', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text }),
-      });
+  //   try {
+  //     const response = await fetch('/audio', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ text }),
+  //     });
       
-      if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`);
-      }
+  //     if (!response.ok) {
+  //       throw new Error(`Request failed with status ${response.status}`);
+  //     }
       
-      const data = await response.json();
+  //     const data = await response.json();
       
-      if (data.error) {
-        throw new Error(data.error);
-      }
+  //     if (data.error) {
+  //       throw new Error(data.error);
+  //     }
       
-      setSummary(data.summary);
-    } catch (err) {
-      console.error('Failed to generate summary:', err);
-      setError(err.message || 'Failed to generate summary');
-    } finally {
-      setLoading(false);
-    }
-  };
+  //     setSummary(data.summary);
+  //   } catch (err) {
+  //     console.error('Failed to generate summary:', err);
+  //     setError(err.message || 'Failed to generate summary');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const handleRefresh = () => {
     if (transcriptionData) {
-      generateSummary(transcriptionData);
+      setSummary(transcriptionData);
     }
   };
 

@@ -22,6 +22,13 @@ export default function App() {
   const containerRef = useRef(null);
   const [transcriptionData, setTranscriptionData] = useState('');
 
+  useEffect(() => {
+    const transcript = localStorage.getItem('transcript');
+    if (transcript) {
+      setTranscriptionData(transcript);
+    }
+  }, []);
+  // setTranscriptionData(transcript);
   // Check if user is already in a room
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -180,8 +187,10 @@ export default function App() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 px-4 py-8">
         <div className="max-w-md w-full mb-8">
-          <SessionSummaryComponent 
+          {/* <SessionSummaryComponent 
             transcriptionData={transcriptionData} 
+          /> */}
+           <SessionSummaryComponent 
           />
         </div>
         <div className="max-w-md w-full p-8 bg-gray-800 rounded-lg shadow-lg text-center">

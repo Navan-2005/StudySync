@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Mic, MicOff, Copy, Trash, Volume2, VolumeX, Settings, Upload, Check, AlertCircle } from "lucide-react";
+import axios from "axios";
 
 export default function VoiceToTextComponent() {
   const [isRecording, setIsRecording] = useState(false);
@@ -12,11 +13,11 @@ export default function VoiceToTextComponent() {
   const [showSettings, setShowSettings] = useState(false);
   const [audioLevel, setAudioLevel] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
-  const [backendUrl, setBackendUrl] = useState('https://api.example.com/transcriptions');
+  const [backendUrl, setBackendUrl] = useState('http://localhost:8000/audio');
   const [uploadStatus, setUploadStatus] = useState(null); // null, 'uploading', 'success', 'error'
   const [autoUpload, setAutoUpload] = useState(false);
+  const[data,setData] = useState(null);
 
-  
   
   const recognitionRef = useRef(null);
   const streamRef = useRef(null);
@@ -343,20 +344,30 @@ export default function VoiceToTextComponent() {
       console.log("Sending to backend:", payload);
       
       // Send to backend
-      const response = await fetch(backendUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload)
-      });
+      // const response = await fetch(backendUrl, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(payload)
+      // });
+      console.log("Sending to backend:", payload);
       
-      if (!response.ok) {
+      const response=await axios.post(backendUrl, {text:payload.transcription.text},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+      
+      if (!response.data) {
         throw new Error(`Server responded with ${response.status}: ${response.statusText}`);
       }
-      
-      const data = await response.json();
+      localStorage.setItem('transcript',response.data)
+      const data = await response.data;
       console.log("Backend response:", data);
+      setData(data);
       setUploadStatus('success');
       
       // Reset status after 3 seconds

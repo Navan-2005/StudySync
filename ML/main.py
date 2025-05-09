@@ -215,11 +215,15 @@ def generate_flashcards_endpoint():
 def summarize_audio():
     try:
         data = request.get_json()
-
+        print("""Audio""")
+        print(data)
         if not data or 'text' not in data:
             return jsonify({"error": "No text provided"}), 400
 
         raw_text = data['text'].strip()
+        # raw_text = data['text']
+        print("Raw Text:", raw_text)
+      
         if not raw_text:
             return jsonify({"error": "Text is empty"}), 400
 
@@ -228,12 +232,14 @@ def summarize_audio():
         Text:
         {raw_text[:12000]}
         """
-
+        print("Raw Text:", raw_text)
         model = genai.GenerativeModel("gemini-1.5-flash")
+        print("prompt:", prompt)
         response = model.generate_content(prompt)
-
+        print("response:", response)
         summary = response.text
-        return jsonify({"summary": summary})
+        print("summary:", summary)
+        return summary
 
     except Exception as e:
         print(f"Error in summarize-text: {e}")
