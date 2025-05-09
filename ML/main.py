@@ -73,7 +73,7 @@ def extract_text_from_pdf(pdf_file):
     pdf_reader = PdfReader(pdf_file)
     return "".join(page.extract_text() for page in pdf_reader.pages)
 
-def generate_flashcards(text, count=5, difficulty="medium"):
+def generate_flashcards(text, count=7, difficulty="medium"):
     prompt = f"""
     Generate {count} {difficulty}-level flashcards from the following educational content.
 
