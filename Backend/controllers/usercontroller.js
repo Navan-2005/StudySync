@@ -1,5 +1,6 @@
 const User=require('../models/User')
 const {getYoutubeVideos}=require('../services/getyoutubevideo');
+const {googlesearch}=require('../services/googleschollers');
 
 const createUser = async (req, res) => {
     try {
@@ -66,6 +67,26 @@ const createUser = async (req, res) => {
       res.status(400).json({ error: error.message });
     }
   }
+
+  const getScholars = async (req, res) => {
+    const { topic } = req.body;
+  
+    if (!topic) {
+      return res.status(400).json({ error: 'Topic is required' });
+    }
+   console.log('topic : ',topic);
+   
+    try {
+      const scholars = await googlesearch(topic);  // ✅ Correct function name
+      console.log('Google Scholar results:', scholars);
+  
+      res.status(200).json({ scholars });
+    } catch (error) {
+      console.error('Error fetching scholar data:', error.message);
+      res.status(500).json({ error: 'Failed to fetch scholar results' });
+    }
+  };
+  
   
 
   module.exports={
@@ -73,5 +94,6 @@ const createUser = async (req, res) => {
     getUsers,
     loginuser,
     getprofile,
-    getvideos
+    getvideos,
+    getScholars
   }
