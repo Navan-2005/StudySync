@@ -5,10 +5,10 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Eye, EyeOff, Mail, User, Lock } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Button } from "@/Components/ui/button";
+import { Input } from "@/Components/ui/input";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/Components/ui/form";
 import { toast } from "sonner";
 import { useSelector,useDispatch } from "react-redux";
 import { setUser } from "../Redux/features/userSlice";
@@ -48,7 +48,7 @@ export default function Signup() {
         
       };
   
-      const response = await axios.post('http://localhost:3000/users/signup', userdata);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/users/signup`, userdata);
       console.log('Response : ',response);
   
        if (response.status === 200) {

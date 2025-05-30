@@ -13,7 +13,7 @@ export default function VoiceToTextComponent() {
   const [showSettings, setShowSettings] = useState(false);
   const [audioLevel, setAudioLevel] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
-  const [backendUrl, setBackendUrl] = useState('http://localhost:8000/audio');
+  const [backendUrl, setBackendUrl] = useState(`${import.meta.env.VITE_ML_URL}/audio`);
   const [uploadStatus, setUploadStatus] = useState(null); // null, 'uploading', 'success', 'error'
   const [autoUpload, setAutoUpload] = useState(false);
   const[data,setData] = useState(null);

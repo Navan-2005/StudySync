@@ -1,25 +1,25 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/Components/ui/toaster";
+import { Toaster as Sonner } from "@/Components/ui/sonner";
+import { TooltipProvider } from "@/Components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
+import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
-import Index from "./pages/Index";
-import Dashboard from "./pages/Dashboard";
-import AIAssistant from "./pages/AIAssistant";
-import Leader from "./pages/Leader";
-import Focuss from "./pages/Focuss";
-import Video from "./pages/Video";
-import Materials from "./pages/Materials";
-import NotFound from "./pages/NotFound";
-import Quiz from './pages/Quiz'
+import Index from "./Pages/Index";
+import Dashboard from "./Pages/Dashboard";
+import AIAssistant from "./Pages/AIAssistant";
+import Leader from "./Pages/Leader";
+import Focuss from "./Pages/Focuss";
+import Video from "./Pages/Video";
+import Materials from "./Pages/Materials";
+import NotFound from "./Pages/NotFound";
+import Quiz from './Pages/Quiz'
 import Voice from './Components/layout/LectureVideoManager'
 import QuizTaker from './Components/QuizTaker'
-import QuizRoom from './pages/Quiz'
-import Mcq from './pages/Mcqs'
+import QuizRoom from './Pages/Quiz'
+import Mcq from './Pages/Mcqs'
 
-import VideoRoom from "./pages/VideoRoom";
+import VideoRoom from "./Pages/VideoRoom";
 import { Focus } from "lucide-react";
 import FlashcardApp from "./Components/layout/LectureVideoManager";
 

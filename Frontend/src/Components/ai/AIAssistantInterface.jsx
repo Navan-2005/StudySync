@@ -489,10 +489,10 @@
 
 import { useState, useRef, useEffect } from "react";
 import { SendHorizontal, Mic, MicOff, MessageSquare, Volume2, VolumeX } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/Components/ui/button";
+import { Input } from "@/Components/ui/input";
+import { Card } from "@/Components/ui/card";
+import { ScrollArea } from "@/Components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
 import { useConversation } from "@11labs/react";
 import axios from 'axios'
@@ -649,7 +649,7 @@ export function AIAssistantInterface() {
         }));
       
       // Make API call to backend
-      const response = await axios.post('http://localhost:3000/ai/chatbot', {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/ai/chatbot`, {
         prompt: messageContent,
         history: chatHistory
       });

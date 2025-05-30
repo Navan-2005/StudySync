@@ -1,5 +1,5 @@
-import { Dashboard } from "@/components/Dashboard";
-import  QuizRoom  from "../pages/QuizRoom";
+import { Dashboard } from "@/Components/Dashboard";
+import  QuizRoom  from "../Pages/QuizRoom";
 
 const Quiz = () => {
   return (

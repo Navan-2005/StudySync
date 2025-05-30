@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { TopBar } from "@/components/layout/TopBar";
+import { Sidebar } from "@/Components/layout/Sidebar";
+import { TopBar } from "@/Components/layout/TopBar";
 
 export function Dashboard({ children }) {
   const [currentTab, setCurrentTab] = useState("focus");

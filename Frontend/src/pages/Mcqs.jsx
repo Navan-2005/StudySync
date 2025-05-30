@@ -1,5 +1,5 @@
-import  Mcq  from "../pages/Mcq";
-import { Dashboard } from "@/components/Dashboard";
+import  Mcq  from "../Pages/Mcq";
+import { Dashboard } from "@/Components/Dashboard";
 
 const Mcqs = () => {
   return (

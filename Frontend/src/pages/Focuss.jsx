@@ -1,6 +1,6 @@
-import { Dashboard } from "@/components/Dashboard";
+import { Dashboard } from "@/Components/Dashboard";
 import { Focus } from "lucide-react";
-import { PomodoroTimer } from "../components/focus/PomodoroTimer";
+import { PomodoroTimer } from "../Components/focus/PomodoroTimer";
 
 const Focuss = () => {
   return (

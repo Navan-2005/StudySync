@@ -1,8 +1,8 @@
 // ScholarResultContainer.jsx
 import { useState, useEffect } from "react";
 import { ExternalLink, Bookmark, Search, User } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Button } from "@/Components/ui/button";
 import axios from "axios";
 
 // Scholar Papers Container Component

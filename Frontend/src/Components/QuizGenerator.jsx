@@ -115,7 +115,7 @@ const QuizGenerator = ({ isLoggedIn }) => {
       setLoading(true);
       setError('');
       
-      const response = await axios.post('http://localhost:3000/ai/generate-quiz', { topic,userId:user._id ,roomId:roomId});
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/ai/generate-quiz`, { topic,userId:user._id ,roomId:roomId});
       console.log('Quiz Generated : ',response.data);
       
       if (response.data && response.data.newquizId

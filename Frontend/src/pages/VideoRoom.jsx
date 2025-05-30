@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
-import ChatbotComp from "../components/ai/ChatbotComp";
+import ChatbotComp from "../Components/ai/ChatbotComp";
 import VoiceRecorderComponent from "../Components/VoiceRecorderComponent";
-import MusicPlayer from '../pages/MusicPlayer';
+import MusicPlayer from '../Pages/MusicPlayer';
 import { FaQuestionCircle } from 'react-icons/fa';
-import SessionSummaryComponent from '../components/ai/SessionSummaryComponent';
+import SessionSummaryComponent from '../Components/ai/SessionSummaryComponent';
 
 function generateRoomID() {
   return Math.random().toString(36).substring(2, 8);

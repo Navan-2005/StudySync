@@ -1,10 +1,10 @@
 import { useState } from "react";
-import  LeaderData  from "../pages/LeaderData";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import  LeaderData  from "../Pages/LeaderData";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Button } from "@/Components/ui/button";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/Components/ui/tabs";
 import { Trophy, Medal, Award, Calendar, CheckCircle } from "lucide-react";
-import { Dashboard } from "@/components/Dashboard";
+import { Dashboard } from "@/Components/Dashboard";
 
 // Mock leaderboard data for different time periods
 const timeFrames = [

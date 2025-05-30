@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 import { Mic, MicOff, Video, VideoOff, Bell, Timer } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
-import { MiniTimer } from "@/components/focus/MiniTimer";
+import { Switch } from "@/Components/ui/switch";
+import { MiniTimer } from "@/Components/focus/MiniTimer";
 
 export function TopBar({ roomName = "Study Room #1", className }) {
   const [micOn, setMicOn] = useState(true);

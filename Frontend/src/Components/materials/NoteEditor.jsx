@@ -1,15 +1,15 @@
 import { useState, useRef, useEffect } from "react";
 import { Save, X, Minimize } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/Components/ui/card";
+import { Button } from "@/Components/ui/button";
+import { Textarea } from "@/Components/ui/textarea";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/Components/ui/dialog";
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
   DropdownMenuItem, 
   DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu";
+} from "@/Components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 
 export function NoteEditor({ 

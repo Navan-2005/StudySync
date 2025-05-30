@@ -1,4 +1,4 @@
-import { Dashboard } from "@/components/Dashboard";
+import { Dashboard } from "@/Components/Dashboard";
 import { Focus } from "lucide-react";
 import VideoRoom from "./VideoRoom";
 

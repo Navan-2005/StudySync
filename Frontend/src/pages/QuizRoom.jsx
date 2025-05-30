@@ -23,7 +23,7 @@ const QuizRoom = ({ isLoggedIn }) => {
       try {
         setLoading(true);
         // Create a new room
-        const response=await axios.post('http://localhost:3000/rooms/create', { userId: user._id,username:user.username });
+        const response=await axios.post(`${import.meta.env.VITE_API_URL}/rooms/create`, { userId: user._id,username:user.username });
         console.log(response);
         
         if (response.data && response.data.roomId) {
@@ -55,7 +55,7 @@ const QuizRoom = ({ isLoggedIn }) => {
     try {
       setLoading(true);
       // Validate room code
-      const response = await axios.post(`http://localhost:3000/rooms/join`,{
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/rooms/join`,{
         roomId: roomCode,
         userId: user._id,
         username:user.username

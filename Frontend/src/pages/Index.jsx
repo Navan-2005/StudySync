@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { HeroSection } from "@/components/home/HeroSection";
-import { FeatureCard } from "@/components/home/FeatureCard";
+import { Button } from "@/Components/ui/button";
+import { HeroSection } from "@/Components/home/HeroSection";
+import { FeatureCard } from "@/Components/home/FeatureCard";
 import { Bot, FileText, Headphones, Award } from "lucide-react";
 
 const features = [

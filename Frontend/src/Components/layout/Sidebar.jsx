@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Calendar, Focus, BarChart, BookUser, Users, TestTube, Smile } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const navItems = [

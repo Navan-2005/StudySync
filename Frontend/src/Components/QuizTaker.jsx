@@ -23,7 +23,7 @@ const QuizTaker = ({ onQuizComplete }) => {
     const fetchQuiz = async () => {
       try {
         console.log('quizId : ', quizId);
-        const response = await axios.post('http://localhost:3000/ai/quizzes', { quizId });
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/ai/quizzes`, { quizId });
         if (!response.data.questions) {
           console.log('No questions');
           return;
@@ -104,7 +104,7 @@ const QuizTaker = ({ onQuizComplete }) => {
       
       const userId = user._id;
       
-      const response = await axios.post('http://localhost:3000/ai/submit-quiz', {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/ai/submit-quiz`, {
         quizId,
         topic,
         userAnswers,
@@ -116,7 +116,7 @@ const QuizTaker = ({ onQuizComplete }) => {
         const { score, percentage } = response.data;
          console.log('Room Id : ', roomId);
          
-        const result = await axios.post('http://localhost:3000/rooms/submit', {
+        const result = await axios.post(`${import.meta.env.VITE_API_URL}/rooms/submit`, {
           roomId,
           userId,
           score,

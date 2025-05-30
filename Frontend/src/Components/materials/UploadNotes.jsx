@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { FileUp, Folder, FolderPlus, File, Edit, Trash, Move, Save, FileText, X, Minimize } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger, DrawerFooter } from "@/components/ui/drawer";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/Components/ui/card";
+import { Button } from "@/Components/ui/button";
+import { Input } from "@/Components/ui/input";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger, DrawerFooter } from "@/Components/ui/drawer";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/Components/ui/table";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/Components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { NoteEditor } from "./NoteEditor";

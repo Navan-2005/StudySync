@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Search, Mic, Bookmark, Play } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Button } from "@/Components/ui/button";
 import axios from "axios";
 import { set } from "zod";
 import ScholarDisplay from "../ScholarDisplay";

@@ -1,5 +1,5 @@
-import { AIAssistantInterface } from "@/components/ai/AIAssistantInterface";
-import { Dashboard } from "@/components/Dashboard";
+import { AIAssistantInterface } from "@/Components/ai/AIAssistantInterface";
+import { Dashboard } from "@/Components/Dashboard";
 
 const AIAssistantPage = () => {
   return (

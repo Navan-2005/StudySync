@@ -5,10 +5,10 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Eye, EyeOff, LogIn, User } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Button } from "@/Components/ui/button";
+import { Input } from "@/Components/ui/input";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/Components/ui/form";
 import { toast } from "sonner";
 import axios from "axios";
 import { useSelector,useDispatch } from "react-redux";
@@ -38,7 +38,7 @@ export default function Login() {
 
   async function onSubmit(data) {
     console.log("Login form submitted:", data);
-    const response=await axios.post('http://localhost:3000/users/login',{email:data.username,password:data.password});
+    const response=await axios.post(`${import.meta.env.VITE_API_URL}/users/login`,{email:data.username,password:data.password});
     if(response.status===200){
       localStorage.setItem('token',response.data.token);
       dispatch(setUser(response.data.user));

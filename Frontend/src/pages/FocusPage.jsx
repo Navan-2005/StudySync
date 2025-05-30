@@ -1,6 +1,6 @@
-import { PomodoroTimer } from "../components/focus/PomodoroTimer";
-import { MiniTimer } from "../components/focus/MiniTimer";
-import { TimerSettings } from "../components/focus/TimerSettings";
+import { PomodoroTimer } from "../Components/focus/PomodoroTimer";
+import { MiniTimer } from "../Components/focus/MiniTimer";
+import { TimerSettings } from "../Components/focus/TimerSettings";
 
 export default function FocusPage() {
   return (
