@@ -12,7 +12,7 @@ const navItems = [
   { name: "Quiz Time", icon: TestTube, path: "/quizroom" },
   { name: "Leaderboard", icon: Smile, path: "/leaderboard" },
   { name: "Flash Cards", icon: Smile, path: "/voice" },
-  { name: "MCQ", icon: Smile, path: "/mcq" },
+  // { name: "MCQ", icon: Smile, path: "/mcq" },
 
 ];
 
